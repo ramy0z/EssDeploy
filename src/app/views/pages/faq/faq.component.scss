@@ -1,0 +1,49 @@
+
+:lang(ar).floatws {
+    left: 30px;
+}
+.floatws {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50px!important;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 100;
+}
+.floatws:hover, .floatws:visited {
+    color: #fff;
+}
+
+
+.panel-group .panel h3 {
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: .1px;
+}
+
+.panel h3 {
+    font-weight: 500;
+    font-size: 20px;
+}
+:lang(ar) {
+    letter-spacing: 0!important;
+}
+.panel-title {
+    margin-top: 0;
+    font-size: 16px;
+}
+.panel-title, .panel>.list-group, .panel>.panel-collapse>.list-group, .panel>.panel-collapse>.table, .panel>.table, .panel>.table-responsive>.table {
+    margin-bottom: 0;
+}
+.panel-heading>.dropdown .dropdown-toggle, .panel-title, .panel-title>.small, .panel-title>.small>a, .panel-title>a, .panel-title>small, .panel-title>small>a {
+    color: inherit;
+}
+.panel-title {
+    padding: 24px 0 24px 0;
+    position: relative;
+}

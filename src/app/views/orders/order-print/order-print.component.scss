@@ -1,0 +1,129 @@
+.mt-element-overlay .mt-overlay-1 .mt-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    background-color: rgba(0,0,0,.7);
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+:lang(ar) {
+    letter-spacing: 0!important;
+}
+.mt-element-step .step-line .active .mt-step-number {
+    color: #32c5d2!important;
+    border-color: #32c5d2!important;
+}
+.mt-element-overlay .mt-overlay-1 {
+    width: 100%;
+    height: 100%;
+    float: right;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+}
+.mt-element-overlay .mt-overlay-1 img {
+    display: block;
+    position: relative;
+    -webkit-transition: all .4s linear;
+    transition: all .4s linear;
+    width: 100%;
+    height: auto;
+}
+.mt-element-step .step-line .mt-step-number {
+    font-size: 24px;
+    border-radius: 50%!important;
+    display: inline-block;
+    margin: auto auto 5px;
+    padding: 9px;
+    border: 3px solid #e5e5e5;
+    position: relative;
+    z-index: 5;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+}
+
+.mt-element-step .step-line .mt-step-col {
+    padding: 0;
+}
+.mt-element-step .step-line .mt-step-col {
+    padding: 30px 0;
+    text-align: center;
+}
+.bg-white {
+    background: #fff!important;
+}
+
+.calc-wrap {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 15px!important;
+    box-shadow: 0 0 15px rgba(0,0,0,.1);
+    padding: 15px 15px 0 15px;
+}
+
+.calc-radio:checked+label {
+    border: 1px solid #5c1382;
+    background: #5c1382;
+    color: #fff;
+}
+.calc-radio:not(checked)+label {
+    border: 1px solid #d5d5d5;
+    color: #646464;
+}
+.paper_paper_size_tab label, .paper_paper_type_tab label, .paper_printing_color_tab label, .paper_printing_side label, .paper_printing_paper_color label {
+    // width: 100%;
+    text-align: center;
+}
+.calc-radio+label {
+    font-weight: 150;
+    padding: 6px 15px 6px 15px;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+input[type=checkbox], input[type=radio] {
+    margin: 4px 0 0;
+    margin-top: 1px\9;
+    line-height: normal;
+}
+input[type=checkbox], input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
+.calc-radio {
+    position: absolute;
+    opacity: 0;
+}
+
+:lang(en).calc-radio:checked+label:before {
+    font-family: "ralewayregular",sans-serif;
+}
+.calc-radio:checked+label:before {
+    top: 6px!important;
+}
+.calc-radio:checked+label:before {
+    content: "\2713";
+    position: absolute;
+    top: 0;
+    right: 1px;
+}
+.paper_printing_binding label, .paper_printing_layout label {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+    width: 100%;
+}
+.calc-row-30 label:last-child {
+    margin-right: 0;
+}

@@ -1,0 +1,602 @@
+<div  class="row"> 
+    <div class="col-sm-12">
+        <div  class="card">
+            <div  class="card-header">حاسبة الاسعار</div>
+            <div class="card-body">
+                <div class="col-lg-8 col-xs-12 col-sm-12 col-md-12 col-lg-offset-2 col-md-offset-0 col-sm-offset-0 col-xs-offset-0 mobile_calculator">
+
+                    <!-- <div class="mt-element-step">
+                        <div class="row step-line">
+                            <div class="col-xs-4 mt-step-col s1 first active">
+                                <a class="proStep1a">
+                                    <div class="mt-step-number bg-white">
+                                        <i class="fa fa-cloud-upload"></i>
+                                    </div>
+                                    <div class="mt-step-title uppercase font-grey-cascade">
+                                    </div>
+                                    <div class="mt-step-content font-grey-cascade">
+                                        الخطوة 1
+                                        <br>
+                                        ارفع ملف
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-4 mt-step-col s2">
+                                <a class="proStep2a">
+                                    <div class="mt-step-number bg-white">
+                                        <i class="fa fa-print">
+                                            <span class="cart-count create-count" id="myCartCount">0</span>
+                                        </i>
+                                    </div>
+                                    <div class="mt-step-title uppercase font-grey-cascade"></div>
+                                    <div class="mt-step-content font-grey-cascade">
+                                        الخطوة 2
+                                        <br>
+                                        أوامر الطباعة
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-4 mt-step-col s3 last">
+                                <a class="proStep4a">
+                                    <div class="mt-step-number bg-white">
+                                        <i class="fa fa-credit-card"></i>
+                                    </div>
+                                    <div class="mt-step-title uppercase font-grey-cascade"></div>
+                                    <div class="mt-step-content font-grey-cascade">
+                                        الخطوة 3
+                                        <br>
+                                        الدفع
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                     -->
+                    <div class="row">
+                        <div class="paper_paper_size_tab" id="paper_paper_size_tab">
+                            <h4>Paper Size</h4>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize1" class="calc-radio paperSize" type="radio"
+                                        value="1" ><label for="optSize1">A5</label></div>
+                                <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize2" class="calc-radio paperSize" type="radio"
+                                        value="2" ><label for="optSize2">A4</label></div>
+                                <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize3" class="calc-radio paperSize" type="radio"
+                                        value="3" ><label for="optSize3">A3</label></div>
+                                <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize4" class="calc-radio paperSize" type="radio"
+                                        value="4" ><label for="optSize4">A2</label></div>
+                                <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize5" class="calc-radio paperSize" type="radio"
+                                        value="5" ><label for="optSize5">A1</label></div>
+                                <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize6" class="calc-radio paperSize" type="radio"
+                                        value="6" ><label for="optSize6">A0</label></div>
+                            </div>
+                        </div>
+                        <div class="paper_paper_type_tab" id="paper_paper_type_tab">
+                            <h4>Paper Type</h4>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-3"><input name="paperTypeN" id="optType1" class="calc-radio paperType" type="radio"
+                                        value="1" papertypeid="1" papersizeid="2"><label for="optType1">Normal</label></div>
+                                <div class="col-xs-6 col-sm-3"><input name="paperTypeN" id="optType2" class="calc-radio paperType" type="radio"
+                                        value="2" papertypeid="2" papersizeid="2"><label for="optType2">Glossy</label></div>
+                                <div class="col-xs-6 col-sm-3"><input name="paperTypeN" id="optType4" class="calc-radio paperType" type="radio"
+                                        value="4" papertypeid="4" papersizeid="2"><label for="optType4">Thick</label></div>
+                                <div class="col-xs-6 col-sm-3"><input name="paperTypeN" id="optType3" class="calc-radio paperType" type="radio"
+                                        value="3" papertypeid="3" papersizeid="2"><label for="optType3">Sticker</label></div>
+                            </div>
+                        </div>
+                        <div class="paper_printing_layout" id="paper_printing_layout">
+                            <h4>Printing Layout</h4>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-2"><input name="printingLayoutN" id="optLayout1" class="calc-radio calPri"
+                                        type="radio" value="1" per="1"><label for="optLayout1"><img
+                                            src="/assets/img/orderImg/pageLayout/1.png"
+                                            alt="Portrait or Landscape"></label><span class="">Portrait or Landscape</span></div>
+                                <div class="col-xs-4 col-sm-2"><input name="printingLayoutN" id="optLayout2" class="calc-radio calPri"
+                                        type="radio" value="2" per="2"><label for="optLayout2"><img
+                                            src="/assets/img/orderImg/pageLayout/2.png"
+                                            alt="Portrait 2 Slides"></label><span class="">Portrait 2 Slides</span></div>
+                                <div class="col-xs-4 col-sm-2"><input name="printingLayoutN" id="optLayout3" class="calc-radio calPri"
+                                        type="radio" value="3" per="4"><label for="optLayout3"><img
+                                            src="/assets/img/orderImg/pageLayout/3.png"
+                                            alt="Portrait 4 Slides"></label><span class="">Portrait 4 Slides</span></div>
+                                <div class="col-xs-4 col-sm-2"><input name="printingLayoutN" id="optLayout4" class="calc-radio calPri"
+                                        type="radio" value="4" per="2"><label for="optLayout4"><img
+                                            src="/assets/img/orderImg/pageLayout/4.png"
+                                            alt="Landscape 2 Slides"></label><span class="">Landscape 2 Slides</span></div>
+                                <div class="col-xs-4 col-sm-2"><input name="printingLayoutN" id="optLayout5" class="calc-radio calPri"
+                                        type="radio" value="5" per="4"><label for="optLayout5"><img
+                                            src="/assets/img/orderImg/pageLayout/5.png"
+                                            alt="Landscape 4 Slides"></label><span class="">Landscape 4 Slides</span></div>
+                            </div>
+                        </div>
+                        <div class="paper_printing_side" id="paper_printing_side">
+                            <h4>Printing Side</h4>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-2"><input name="printingSideN" id="optSide1" class="calc-radio calPri" type="radio"
+                                        value="1" per="1"><label for="optSide1">1-Side</label></div>
+                                <div class="col-xs-6 col-sm-2"><input name="printingSideN" id="optSide2" class="calc-radio calPri" type="radio"
+                                        value="2" per="2"><label for="optSide2">2-Sided</label></div>
+                            </div>
+                        </div>
+                        <div class="paper_printing_binding" id="paper_printing_binding">
+                            <h4>Binding Option</h4>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding1" class="calc-radio calPri"
+                                        type="radio" value="1" price="0.00" max="0" min="0"><label for="optBinding1">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/no.png"
+                                                    title="No Binding" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP"
+                                                                data-go-cat="No Binding preview" data-go-act="click"
+                                                                data-go-leb="No Binding | بدون تغليف (Preview)" data-id="ddww0"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic0"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/no1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="No Binding<br>Number Of Pages Unlimited"
+                                                                                    id="ddww0"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/no2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="No Binding<br>Number Of Pages Unlimited"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/no3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="No Binding<br>Number Of Pages Unlimited"></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>No Binding</span><span class="s2">Number
+                                                    Of Pages</span><span class="s3">Unlimited</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding2" class="calc-radio calPri"
+                                        type="radio" value="3" price="0.15" max="1" min="1"><label for="optBinding2">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/trans.png"
+                                                    title="Plastic Sleeves" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP"
+                                                                data-go-cat="Plastic Sleeves preview" data-go-act="click"
+                                                                data-go-leb="Plastic Sleeves | كيس شفاف (Preview)" data-id="ddww1"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic1"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/trans1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Plastic Sleeves<br>Number Of Pages 1 To 50"
+                                                                                    id="ddww1"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/trans2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Plastic Sleeves<br>Number Of Pages 1 To 50"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/trans3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Plastic Sleeves<br>Number Of Pages 1 To 50"></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Plastic Sleeves</span><span
+                                                    class="s2">Number Of Pages</span><span class="s3">1 To 50</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding3" class="calc-radio calPri"
+                                        type="radio" value="4" price="0.05" max="2" min="2"><label for="optBinding3">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/cornerstap.png"
+                                                    title="Corner stapled" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP"
+                                                                data-go-cat="Corner stapled preview" data-go-act="click"
+                                                                data-go-leb="Corner stapled | تدبيس ركن (Preview)" data-id="ddww2"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic2"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/cornerstap1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Corner stapled<br>Number Of Pages 2 To 100"
+                                                                                    id="ddww2"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/cornerstap2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Corner stapled<br>Number Of Pages 2 To 100"></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Corner stapled</span><span
+                                                    class="s2">Number Of Pages</span><span class="s3">2 To 100</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding4" class="calc-radio calPri"
+                                        type="radio" value="5" price="1.00" max="2" min="2"><label for="optBinding4">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/sidestap.png"
+                                                    title="Side stapled" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP"
+                                                                data-go-cat="Side stapled preview" data-go-act="click"
+                                                                data-go-leb="Side stapled | تدبيس جانبي (Preview)" data-id="ddww3"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic3"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/sidestap1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Side stapled<br>Number Of Pages 2 To 100"
+                                                                                    id="ddww3"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/sidestap2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Side stapled<br>Number Of Pages 2 To 100"></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Side stapled</span><span class="s2">Number
+                                                    Of Pages</span><span class="s3">2 To 100</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding5" class="calc-radio calPri"
+                                        type="radio" value="6" price="8.00" max="2" min="2"><label for="optBinding5">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/spiral.png"
+                                                    title="Wire" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP" data-go-cat="Wire preview"
+                                                                data-go-act="click" data-go-leb="Wire | سلك (Preview)" data-id="ddww4"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic4"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/spiral1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Wire<br>Number Of Pages 2 To 300"
+                                                                                    id="ddww4"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/spiral2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Wire<br>Number Of Pages 2 To 300"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/spiral3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Wire<br>Number Of Pages 2 To 300"></a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Wire</span>
+                                                <span class="s2">Number Of Pages</span><span class="s3">2 To 300</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding10" class="calc-radio calPri"
+                                        type="radio" value="13" price="25.00" max="1" min="1"><label for="optBinding10">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/2ring.png"
+                                                    title="2-Ring" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP" data-go-cat="2-Ring preview"
+                                                                data-go-act="click" data-go-leb="2-Ring | ملف خرمين (Preview)"
+                                                                data-id="ddww5"><i class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic5"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/2ring1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="2-Ring<br>Number Of Pages 1 To 500"
+                                                                                    id="ddww5"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/2ring2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="2-Ring<br>Number Of Pages 1 To 500"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/2ring3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="2-Ring<br>Number Of Pages 1 To 500"></a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>2-Ring</span><span class="s2">Number Of
+                                                    Pages</span><span class="s3">1 To 500</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding11" class="calc-radio calPri"
+                                        type="radio" value="14" price="30.00" max="1" min="1"><label for="optBinding11">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/3ring.png"
+                                                    title="3-Ring" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP" data-go-cat="3-Ring preview"
+                                                                data-go-act="click" data-go-leb="3-Ring | ملف ٣ أخرام (Preview)"
+                                                                data-id="ddww6"><i class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic6"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/3ring1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="3-Ring<br>Number Of Pages 1 To 600"
+                                                                                    id="ddww6"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/3ring2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="3-Ring<br>Number Of Pages 1 To 600"></a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>3-Ring</span><span class="s2">Number Of
+                                                    Pages</span><span class="s3">1 To 600</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding6" class="calc-radio calPri" 
+                                    type="radio" value="7" price="10.00" max="10" min="10"><label
+                                        for="optBinding6">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/spiral.png"
+                                                    title="Spiral" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP" data-go-cat="Spiral preview"
+                                                                data-go-act="click" data-go-leb="Spiral | بلاستك حلزوني (Preview)"
+                                                                data-id="ddww7"><i class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic7"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/spiral1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Spiral<br>Number Of Pages 10 To 200"
+                                                                                    id="ddww7"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/spiral2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Spiral<br>Number Of Pages 10 To 200"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/spiral3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Spiral<br>Number Of Pages 10 To 200"></a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Spiral</span><span class="s2">Number Of
+                                                    Pages</span><span class="s3">10 To 200</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding7" class="calc-radio calPri" 
+                                    type="radio" value="9" price="10.00" max="15" min="15"><label
+                                        for="optBinding7">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/velo.png"
+                                                    title="Velo" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP" data-go-cat="Velo preview"
+                                                                data-go-act="click" data-go-leb="Velo | كعب مسمار (Preview)" data-id="ddww8"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic8"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/velo1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Velo<br>Number Of Pages 15 To 200"
+                                                                                    id="ddww8"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/velo2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Velo<br>Number Of Pages 15 To 200"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/velo3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Velo<br>Number Of Pages 15 To 200"></a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Velo</span><span class="s2">Number Of
+                                                    Pages</span><span class="s3">15 To 200</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding8" class="calc-radio calPri" 
+                                    type="radio" value="17" price="10.00" max="10" min="10"><label
+                                        for="optBinding8">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/strip.png"
+                                                    title="Strip" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP" data-go-cat="Strip preview"
+                                                                data-go-act="click" data-go-leb="Strip | كعب حراري (Preview)" data-id="ddww9"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic9"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/strip1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Strip<br>Number Of Pages 10 To 100"
+                                                                                    id="ddww9"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/strip2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title="Strip<br>Number Of Pages 10 To 100"></a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span>Strip</span><span class="s2">Number Of
+                                                    Pages</span><span class="s3">10 To 100</span></div>
+                                        </div>
+                                    </label></div>
+                                <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding9" class="calc-radio calPri" 
+                                    type="radio" value="10" price="10.00" max="100" min="100"><label
+                                        for="optBinding9">
+                                        <div class="mt-element-overlay" style="height: 89.5px;">
+                                            <div class="mt-overlay-1"><img src="/assets/img/orderImg/BindingOption/StichedBinding.png"
+                                                    title=" Stiched Binding" style="height: 89.5px;">
+                                                <div class="mt-overlay">
+                                                    <ul class="mt-info">
+                                                        <li><a class="btn default btn-outline printcbpview goAnEvP"
+                                                                data-go-cat=" Stiched Binding preview" data-go-act="click"
+                                                                data-go-leb=" Stiched Binding | تخييط (Preview)" data-id="ddww10"><i
+                                                                    class="icon-eye"></i></a>
+                                                            <div id="js-grid-mosaic10"
+                                                                class="js-grid-mosaic cbp cbp-caption-active cbp-caption-pushTop cbp-ready"
+                                                                style="height: 0px;">
+                                                                <div class="cbp-wrapper-outer">
+                                                                    <div class="cbp-wrapper">
+                                                                        <div class="cbp-item" style="width: 3px; left: 0px; top: 0px;">
+                                                                            <div class="cbp-item-wrapper"><a
+                                                                                    href="/assets/img/orderImg/BindingOption/StichedBinding1.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title=" Stiched Binding<br>Number Of Pages 100 To 600"
+                                                                                    id="ddww10"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/StichedBinding2.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title=" Stiched Binding<br>Number Of Pages 100 To 600"></a><a
+                                                                                    href="/assets/img/orderImg/BindingOption/StichedBinding3.png"
+                                                                                    class="cbp-lightbox hidden"
+                                                                                    data-title=" Stiched Binding<br>Number Of Pages 100 To 600"></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bindingSpanD">
+                                            <div class="bindingSpanH" style="padding-top: 5px;"><span> Stiched Binding</span><span
+                                                    class="s2">Number Of Pages</span><span class="s3">100 To 600</span></div>
+                                        </div>
+                                    </label></div>
+                            </div>
+                        </div>
+                        <div class="paper_printing_extra" id="paper_printing_extra">
+                            <div class="form-group"><label>
+                                    <h4>Extra Options</h4>
+                                </label>
+                                <div class="mt-checkbox-list">
+                                    <div class="col-xs-12"><label class="mt-checkbox mt-checkbox-outline">First Page Color<input class="calPri"
+                                                type="checkbox" value="1" price="1.00" name="extraN" id="optExtra1"><span></span></label></div>
+                                </div>
+                                <div class="col-xs-12"><label class="mt-checkbox mt-checkbox-outline">First Page Hard<input class="calPri"
+                                            type="checkbox" value="2" price="1.00" name="extraN" id="optExtra2"><span></span></label></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <a href="javascript:;" class="btn green printButton">
+                                    <span id="ctl00_ctl00_ctl00_ctl00_mainContent_mainContent_mainContent_mainContent_Label3">Add Print
+                                        Order</span><i class="fa fa-print"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

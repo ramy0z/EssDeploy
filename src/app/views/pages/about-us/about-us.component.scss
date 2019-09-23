@@ -1,0 +1,40 @@
+.about p {
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: 300;
+}
+:lang(ar) {
+    letter-spacing: 0!important;
+}
+.about-sections-block-eye {
+    background: url('/assets/pages/eye.svg')no-repeat -2% 110%;
+
+    background-size: 24%;
+}
+
+.about-sections-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    width: 100%;
+    margin-top: 50px;
+    box-shadow: 0 0 18px rgba(0,0,0,.14);
+    padding: 0 100px;
+}
+.about-sections-block-dart {
+    background: url('/assets/pages/dart.svg') no-repeat 105% 140%;
+    background-size: 25%;
+}
+.about-sections-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    width: 100%;
+    margin-top: 50px;
+    box-shadow: 0 0 18px rgba(0,0,0,.14);
+    padding: 0 100px;
+}

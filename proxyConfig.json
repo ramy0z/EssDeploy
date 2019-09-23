@@ -1,0 +1,10 @@
+"architect":{
+    "serve":{
+        "bulider":"@angular-devkit/bulid-angular:dev-server",
+        "option":{
+            "browserTarget":"Ess:build",
+            "proxyConfig":"proxy.config.json"
+        }
+
+    }
+}
