@@ -1,0 +1,16 @@
+{
+	"dashboard.layout.Account": "حساب",
+	"dashboard.layout.Logout": "تسجيل خروج",
+	"dashboard.layout.Messages": "رسائل",
+	"dashboard.layout.MyOrders": "الملف الشخصي",
+	"dashboard.layout.Payments": "المدفوعات",
+	"dashboard.layout.Profile": "الملف الشخصي",
+	"dashboard.layout.Security": "الأمان",
+	"dashboard.layout.Settings": "الإعدادات",
+	"dashboard.layout.Updates": "تحديثات",
+	"dashboard.layout.Users": "المستخدمين",
+	"dashboard.layout.dashboard": "لوحة القيادة",
+	"dashboard.navBar.home": "الصفحة الرئيسية",
+	"dashboard.navBar.orderPrint": "طلب طباعة",
+	"dashboard.navBar.orders": "طلبات"
+}

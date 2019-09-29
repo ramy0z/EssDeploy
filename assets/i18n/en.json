@@ -1,0 +1,16 @@
+{
+	"dashboard.layout.Account": "Account",
+	"dashboard.layout.Logout": "Logout",
+	"dashboard.layout.Messages": "Messages",
+	"dashboard.layout.MyOrders": "Profile",
+	"dashboard.layout.Payments": "Payments",
+	"dashboard.layout.Profile": "Profile",
+	"dashboard.layout.Security": "Security",
+	"dashboard.layout.Settings": "Settings",
+	"dashboard.layout.Updates": "Updates",
+	"dashboard.layout.Users": "Users",
+	"dashboard.layout.dashboard": "Dashboard",
+	"dashboard.navBar.home": "Home",
+	"dashboard.navBar.orderPrint": "Print Order",
+	"dashboard.navBar.orders": "Orders"
+}
