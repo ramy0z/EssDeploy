@@ -24,11 +24,13 @@
       <a class="nav-link" href="#"><i class="icon-list"></i></a>
     </li>
     <li  class="nav-item dropdown" dropdown placement="bottom right">
-      <a class="nav-link" href="#" data-toggle="dropdown" dropdownToggle (click)="false"><i class="icon-location-pin"></i></a>
+      <a class="nav-link" href="#" data-toggle="dropdown" dropdownToggle (click)="false"><i class="icon-globe"></i></a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
           <div class="dropdown-header text-center"><strong>language</strong></div>
-          <button (click)="useLanguage('en')">en</button>
-          <button (click)="useLanguage('ar')">ع</button>
+          <img (click)="useLanguage('en')" src="https://www.seekpng.com/png/detail/45-452233_veggiesyle-languages-english-english-language-icon-png.png"
+           style="max-width: 50px;max-height: 50px;cursor: pointer;margin-left: 20px;">
+           <img (click)="useLanguage('ar')" src="https://www.seekpng.com/png/detail/300-3007543_illustration-of-flag-of-saudi-arabia-saudi-arabia.png"
+           style="max-width: 50px;max-height: 50px;cursor: pointer;">
       </div>
     </li>
     <li class="nav-item dropdown" dropdown placement="bottom right">

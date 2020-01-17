@@ -107,7 +107,11 @@ For transparency into our release cycle and in striving to maintain backward com
 
 See [the Releases section of our project](https://github.com/coreui/coreui-free-angular-admin-template/releases) for changelogs for each release version.
 
+<<<<<<< HEAD
 ## Creatorng 
+=======
+## Creators
+>>>>>>> a572343cf95fc41639fae0d42ecfa741a0038dcd
 **Ramy Ezz**
 
 
@@ -120,4 +124,8 @@ Get updates on ESS's development and chat with the project maintainers and commu
 copyright 2018 creativeLabs
 ## Support ESS Development
 
+<<<<<<< HEAD
 ESS is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing.
+=======
+ESS is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing.
+>>>>>>> a572343cf95fc41639fae0d42ecfa741a0038dcd

@@ -11,7 +11,11 @@ export class UserService {
   constructor(private http:Http) { }
   
   signUp(RData){
-    return this.http.post(`${config.apiUrl}/register`,RData).pipe(map(res=>res.json()));
+    let reqData={
+      "name":"signUser",
+      "param":RData
+    };
+    return this.http.post(`${config.apiUrl}/`,reqData).pipe(map(res=>res.json()));
   }
 
 

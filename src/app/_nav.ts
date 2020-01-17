@@ -64,18 +64,17 @@ export const navItemsAr: NavData[] = [
 ];
 
 export const navItemsEn: NavData[] = [
-  {
-    name: 'Home',url: '/dashboard',icon: 'icon-home'
+  {name: 'Home',url: '/dashboard',icon: 'icon-home'
     // ,badge: { variant: 'info',text: 'NEW' }
   },
   {title: true, name: 'Orders'},
     {name: 'Print Order',url: '/orderprint',icon: 'icon-printer'},
     {name: 'My Orders',url: '/myorder',icon: 'icon-basket'},
     {name: 'My Orders Reports',url: '/orderHistory',icon: 'icon-notebook'},
-  {title: true,name: 'My Account'},
+    {title: true,name: 'My Account'},
     {name: 'My Wallet',url: '/mywallet',icon: 'icon-wallet'},
     {name: 'Account Movments',url: '/myaccount',icon: 'icon-notebook'},
-  {title: true,name: 'Account Settings'},
+    {title: true,name: 'Account Settings'},
     {name: 'Profile',url: '/profile',icon: 'icon-user'},
     {name: 'Security',url: '/security-info',icon: 'icon-lock'},
   {

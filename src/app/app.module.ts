@@ -93,15 +93,15 @@ import { ContactUsComponent } from './views/pages/contact-us/contact-us.componen
              useFactory: HttpLoaderFactory,
              deps: [HttpClient]
          }
-     }),
-    JwtModule.forRoot({
-      config:{
-        tokenGetter:function tokenGetter(){
-          return localStorage.getItem('access_token'); },
-        whitelistedDomains : ['localhost:80'],
-        blacklistedRoutes :['http://localhost/api/auth/login']
-      }
-    }),
+     })
+    //  ,JwtModule.forRoot({
+    //   config:{
+    //     tokenGetter:function tokenGetter(){
+    //       return localStorage.getItem('access_token'); },
+    //     whitelistedDomains : ['localhost:80'],
+    //     blacklistedRoutes :['http://localhost/api/auth/login']
+    //   }
+    // }),
   ],
   declarations: [
     AppComponent,
@@ -139,5 +139,5 @@ import { ContactUsComponent } from './views/pages/contact-us/contact-us.componen
 export class AppModule { }
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http ,"./assets/i18n/", ".json");
 }
