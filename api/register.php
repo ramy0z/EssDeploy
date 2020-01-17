@@ -16,31 +16,39 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
     try{
-        $reqData =json_decode(file_get_contents("php://input"),TRUE) ;
         $register= new register();
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
             if( isset($_GET['code']) ){
-                if($register->verifyTempCustomer()){
+                $returnVerify=$register->verifyTempCustomer();
+                if($returnVerify[0]){
                    //register that customer 
-                  if($register->signUpUsers($data)){
+                   $data=$returnVerify[1];
+                  if($register->signUpCustomers($data)){
                    // >>>>>>>>>>>>>>>>>>>>
+                   $urlApprove =SITE_URL.' ';
+                   $succssessRespons= $register->createHtmlMail( 'Account Verification' , 
+                   "Your Account Approved Successfully" ,
+                   "Now, You Can Check Our Site Now From Here: ".$urlApprove." .");
+                    header("content-type:text/html");echo $succssessRespons;exit;
                   }
                   else{
                     $errorMsg= $register->createHtmlMail( 'Verification Error' , "Error While Create Your Account" ,"Sorry, Faild To Create Your Account. Please, contact Your Provider.",true);
                     header("content-type:text/html");echo $errorMsg;exit;
                   }
                 }else {
-                    $errorMsg= $register->createHtmlMail( 'Verification code Error' , "Error While Verify Account" ,"Sorry, Faild To Verify Your Account. Please, contact Your Provider.",true);
+                    $message=$returnVerify[1];
+                    $errorMsg= $register->createHtmlMail( 'Verification Error' , "Error While Verify Your Account" ,$message,true);
                     header("content-type:text/html");echo $errorMsg;exit;
                 }
             }
-            else {
-                $errorMsg= $register->createHtmlMail( 'Verification code Error' , "Verification code Dosnt Matched" ,"Sorry, Faild To Verify Your Account. Please, contact Your Provider.",true);
-                header("content-type:text/html"); echo $errorMsg;exit;
-                //$register->throwError(REQUEST_METHOD_NOT_FOUND, " THIS REQUEST NOT VALID");
-            }
+            // else {
+            //     $errorMsg= $register->createHtmlMail( 'Verification code Error' , "Error In Verification code" ,"Sorry, Faild To Verify Your Account. Please, contact Your Provider.",true);
+            //     header("content-type:text/html"); echo $errorMsg;exit;
+            //     //$register->throwError(REQUEST_METHOD_NOT_FOUND, " THIS REQUEST NOT VALID");
+            // }
         }
         else if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $reqData =json_decode(file_get_contents("php://input"),TRUE) ;
             if($reqData['name']=='EssRegisterCust'){
                 if(!is_array($reqData['param'])) {$register->throwError(API_PARAM_REQUIRED, "PARAM is required.");}
                 else{
@@ -59,13 +67,11 @@ use PHPMailer\PHPMailer\Exception;
     protected $dbConn;
     public $param;
 
-    public function signUpUsers($data){
-        $reqData =json_decode(file_get_contents("php://input"),TRUE) ;
+    public function signUpCustomers($data){
         try {
-            $uName = $this->validateParameter('uName', $this->data['uName'], STRING);
-            $email = $this->validateParameter('email', $this->data['email'], STRING);
-            $userPass = $this->validateParameter('password', $this->data['password'], STRING);
-
+            $uName = $this->validateParameter('uName', $data['uName'], STRING);
+            $email = $this->validateParameter('email', $data['email'], STRING);
+            $userPass = $this->validateParameter('password', $data['usrPass'], STRING);
             $conn= DBService::getCon();
             $conn->beginTransaction();
 
@@ -75,20 +81,35 @@ use PHPMailer\PHPMailer\Exception;
             $stmt->execute();
             $entry_id = $conn->lastInsertId();
 
-            $sql="INSERT INTO users (email, usrPass ,entry_id) VALUES (:email , :usrPass , :entry_id)";
+            $sql="INSERT INTO users (email, usrPass ,entry_id ,role_id ,active) VALUES (:email , :usrPass , :entry_id,5 ,1)";
             $stmt = $conn->prepare($sql);
-            $password_hash = password_hash($userPass, PASSWORD_BCRYPT);
+            //$password_hash = password_hash($userPass, PASSWORD_BCRYPT);
             $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':usrPass', $password_hash);
+            $stmt->bindParam(':usrPass', $userPass);
             $stmt->bindParam(':entry_id', $entry_id);
             $stmt->execute();
             $uId = $conn->lastInsertId();
+
+             // upsate users temp
+             $sql="UPDATE acc_entry SET user_id=:uid WHERE id=:id";
+             $stmt =  $this->dbConn->prepare($sql);
+             $stmt->bindParam(':uid', $uId );
+             $stmt->bindParam(':id', $entry_id );
+             $stmt->execute();
+
+            // upsate users temp
+            $sql="UPDATE users_temp SET status=1 ,joinDt=now() WHERE id=:id";
+            $stmt =  $this->dbConn->prepare($sql);
+            $stmt->bindParam(':id', $data['id']);
+            $stmt->execute();
+
             $conn->commit();
             DBService::closeCon();
             $conn = null;
             return true;
         }
         catch(PDOException $e){
+            echo $e;
             $conn->rollback();
             DBService::closeCon();
             $conn = null;
@@ -105,8 +126,8 @@ use PHPMailer\PHPMailer\Exception;
             $mail->isSMTP();                                            // Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-            $mail->Username   = 'admonsocyle2019@gmail.com';                     // SMTP username
-            $mail->Password   = 'SOCYLEgymin123!@#';                               // SMTP password
+            $mail->Username   = 'info.ess365@gmail.com';                     // SMTP username
+            $mail->Password   = 'ELLMOHAGERESS1/1*12!@#';                               // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
             $mail->Port       = 587;                                    // TCP port to connect to
 
@@ -146,10 +167,7 @@ use PHPMailer\PHPMailer\Exception;
         $html->getElementById('mail_head')->nodeValue = $Head;
         $html->getElementById('mail_title')->nodeValue =  $Subject;
         $html->getElementById('mail_body')->nodeValue = $Body;
-        
-        // $html = $html.preg_replace('mail_head', $Head);
-        // $html = $html.preg_replace('mail_title', $Subject);
-        // $html = $html.preg_replace('mail_body',  $Body);
+        $html->getElementById('mail_body')->style->color = "red";
         return $html->saveHTML();
     }
 
@@ -166,17 +184,13 @@ use PHPMailer\PHPMailer\Exception;
                 $email = $this->validateParameter('email', $this->param['email'], STRING);
                 $userPass = $this->validateParameter('password', $this->param['password'], STRING);
                 $password_hash = password_hash($userPass, PASSWORD_BCRYPT);
-                $roleId=5;//$role=="Customer"
-                $entryParentID=1;
                 $active_code=$this->generate_rand();
-                $sql="INSERT INTO users_temp (uName,usrPass,email,role_id,entry_parent_id,active_code) VALUES 
-                        (:uName,:usrPass,:email,:role_id,:entry_parent_id ,:active_code)";
+                $sql="INSERT INTO users_temp (uName,usrPass,email,active_code) VALUES 
+                        (:uName,:usrPass,:email,:active_code)";
                 $stmt =  $this->dbConn->prepare($sql);
                 $stmt->bindParam(':uName', $uName);
                 $stmt->bindParam(':usrPass', $password_hash);
                 $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':role_id', $roleId);
-                $stmt->bindParam(':entry_parent_id', $entryParentID);
                 $stmt->bindParam(':active_code', $active_code);
                 $stmt->execute();
                 //send Email to user with varification code
@@ -206,6 +220,7 @@ use PHPMailer\PHPMailer\Exception;
             }
         }
         catch (PDOException $e) {
+            //echo $e;
             $conn->rollback();
             $message ='Sorry ,Server Faild To Create Your Account. Please, contact Your Provider.';
             $this->throwError(CATCH_DB_ERROR, $message);
@@ -219,24 +234,14 @@ use PHPMailer\PHPMailer\Exception;
             $stmt = $this->dbConn->prepare($sql);
             $stmt->bindParam(':active_code', $active_code);
             $stmt->execute();
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            // {
-            //     "id": "0",
-            //     "uName": "ramyezzaa",
-            //     "usrPass": "$2y$10$g4Cj5qdG6BxLpnl4BCDTauT2HJ6HR4TkfIG2ZiPM8Sg.Y7rMyh83.",
-            //     "email": "ra@my.ezz9",
-            //     "role_id": "5",
-            //     "entry_parent_id": "1",
-            //     "active_code": "hPdqMNr7a9oGuFItAOXLKSsEQ2ZJvk0w36WbmfYRBcngxy8UTV"
-            // }
-            //header("content-type: application/json");
-            //http_response_code(200);
-            //$response = json_encode(['resonse' => ['status' => 200, "result" => $data]]);
-            //echo $response; exit;
-            if($data['active_code']==$active_code){
-                return true;
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($data['active_code']==$active_code && $data['status']==1){
+                return [false , "Sorry, This Account Has Been Verified Before."];
             }
-            else return false;
+            else if($data['active_code']==$active_code){
+                return [true , $data];
+            }
+            else return [false , "Sorry, Faild To Verify Your Account. Please, contact Your Provider."];
         }
     }
     public function checkMailUserExist($mail ,$userName) {
@@ -248,7 +253,6 @@ use PHPMailer\PHPMailer\Exception;
             $stmt->bindParam(':userName', $userName);
             $stmt->execute();
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo count($data);
             if( count($data)==0 ){ return false;}
             elseif( count($data)==1 ){
                 $data=$data[0];

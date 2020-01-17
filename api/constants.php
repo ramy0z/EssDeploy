@@ -1,9 +1,11 @@
 
 <?php 
 	/*Security*/
-	define('SECRETE_KEY', 'YOUR_SECRET_KEY');
+	define('SECRETE_KEY', '!@#$%^&*(MY_SECRET_KEY_AND_IT_VERY_STRONG_!@#$%^&*(');
 	// $_SERVER['DOCUMENT_ROOT']
 	define('BASE_URL', 'http://localhost/Ess/api');
+	define('IMAGE_BASE_URL', 'http://localhost/Ess/api/uploads/users'); //$_SERVER['DOCUMENT_ROOT'] . "/ESS/api";
+	define('SITE_URL', 'http://www.ess.com');
 	
 	/*Data Type*/
 	define('BOOLEAN', 	'1');

@@ -2,44 +2,12 @@
 require_once './JwtApi.php';
 require_once "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
-	class Api  extends Rest {
+	class ApiAdmin  extends Rest {
 		
 		public function __construct() {
 			parent::__construct();
 		}
 		
-		public function upload_image(){
-			$uploadFile = new uploadFile();
-			$uploadFile->Uploader_Image(13,$_File);
-			echo "Dataaaaaaaaaa of app";
-		}
-
-		public function get_App_init(){
-			echo "Dataaaaaaaaaa of app get_App_init";
-		}
-
-		public function ProcessUserMeta(){
-			require_once('./models/user.php');
-			print_r($this->param);
-			$user_id = $this->validateParameter('uid', $this->param['uid'], INTEGER, true);
-			$name = $this->validateParameter('name', $this->param['name'], STRING, false);
-			$addr = $this->validateParameter('addr', $this->param['addr'], STRING, false);
-			$mobile = $this->validateParameter('mobile', $this->param['mobile'], INTEGER, false);
-
-			$user= new User();
-			$user-> setId($user_id);
-			$user->setName($name);
-			$user->setEmail($email);
-			$user->setAddress($addr);
-			$user->setMobile($mobile);
-			if(!$user->updateOrAdd()) {
-				$message = 'Failed to Process User Data.';
-			} else {
-				$message = "Process Done Successfully.";
-			}
-			$this->returnResponse(SUCCESS_RESPONSE, $message);
-		}
-
 
 	
 		public function addCustomer() {

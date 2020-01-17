@@ -1,5 +1,7 @@
 <?php
 error_reporting(E_ALL);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 include_once './config/database.php';
 include_once "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
@@ -27,7 +29,8 @@ class Rest {
         $this->validateRequest();
         $this->dbConn = DBService::getCon();
         $sNm=strtolower( $this->serviceName);
-        if( 'generatetoken' !=$sNm && $sNm != 'signusers' && $sNm != 'signuptempcustomer'&& $sNm != 'verifytempcustomer' ) {
+        if( $sNm=='login' || $sNm =='userAuth' ) {}
+        else {
             $this->validateToken();
         }
     }
@@ -87,18 +90,22 @@ class Rest {
         return $value;
     }
     Public function validateRequest() {
-        if(isset($_SERVER['CONTENT_TYPE']) != 'application/json') {
+        $data = json_decode($this->request, true);
+        if(isset($_SERVER['CONTENT_TYPE']) == ' multipart/form-data' &&  $data['name'] == "upload_image" ) {
+        }
+        else if(isset($_SERVER['CONTENT_TYPE']) != 'application/json') {
             $this->throwError(REQUEST_CONTENTTYPE_NOT_VALID, 'Request content type is not valid');
         }
-        $data = json_decode($this->request, true);
-        if(!isset($data['name']) || $data['name'] == "") {
+        else {
+            if(!isset($data['name']) || $data['name'] == "") {
             $this->throwError(API_NAME_REQUIRED, "API name is required.");
+            }
+            $this->serviceName = $data['name'];
+            if(!isset($data['param']) || !is_array($data['param'])) {
+                $this->throwError(API_PARAM_REQUIRED, "API PARAM is required.");
+            }
+            $this->param = $data['param'];
         }
-        $this->serviceName = $data['name'];
-        if(!is_array($data['param'])) {
-            $this->throwError(API_PARAM_REQUIRED, "API PARAM is required.");
-        }
-        $this->param = $data['param'];
     }
     public function validateToken() {
         try {
@@ -120,6 +127,42 @@ class Rest {
              //DBService::closeCon();
             $this->throwError(ACCESS_TOKEN_ERRORS, $e->getMessage());
         }
+    }
+    public function generateToken($user){
+        $issuer_claim = "THE_ISSUER servername"; // this can be the 
+        $audience_claim = "THE_AUDIENCE"; //the audience
+        $issuedat_claim = time(); // issued at
+        $notbefore_claim = $issuedat_claim + 10; //not before in seconds
+        $expire_claim = $issuedat_claim + (60*60); // expire time in seconds
+        $expire_claim2 = $issuedat_claim + (60*60*24*3); // expire time in seconds 3days
+        $paylod = [
+            "iss" => $issuer_claim,"aud" => $audience_claim,
+            "iat" => $issuedat_claim,"nbf" => $notbefore_claim,
+            "exp" => $expire_claim,'userId' => $user['id']
+        ];
+        $paylod2 = [
+            "iss" => $issuer_claim,"aud" => $audience_claim,
+            "iat" => $issuedat_claim,"nbf" => $notbefore_claim,
+            "exp" => $expire_claim2,'userId' => $user['id'],
+        ];
+        $token = JWT::encode($paylod, SECRETE_KEY);
+        $refreshtToken = JWT::encode($paylod2,(SECRETE_KEY.$user['id'].SECRETE_KEY));
+        
+        return $data = ['token' => $token,'refreshtToken' => $refreshtToken,
+                'uid'=>$user['id'],'urole'=>$user['role'] ];
+    }
+    public function processApiAdmin() {
+        try {
+            $api_admin = new ApiAdmin;
+            $rMethod = new reflectionMethod('APIADMIN', $this->serviceName);
+            if(!method_exists($api_admin, $this->serviceName)) {
+                $this->throwError(API_DOST_NOT_EXIST, "This API does not exist.");
+            }
+            $rMethod->invoke($api_admin);
+        } catch (Exception $e) {
+            $this->throwError(API_DOST_NOT_EXIST, "This API does not exist.");
+        }
+        
     }
     public function processApi() {
         try {
@@ -147,7 +190,55 @@ class Rest {
         echo $response; exit;
     }
 
-   
+    public function login() {
+        $email = $this->validateParameter('email', $this->param['email'], STRING);
+        $pass = $this->validateParameter('pass', $this->param['pass'], STRING);
+        try {
+            $stmt = $this->dbConn->prepare("SELECT users.id AS id ,users.usrPass AS usrPass,users.active AS active ,user_role.roleNm AS role ,acc_entry.entryNm AS usrName FROM users JOIN acc_entry join user_role on acc_entry.id=users.entry_id and user_role.id=users.role_id WHERE users.email = :email");
+            $stmt->bindParam(":email", $email);
+            //$stmt->bindParam(":pass", $pass);
+            $stmt->execute(); //$password_hash = password_hash($password, PASSWORD_BCRYPT);AND usrPass = :pass
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!is_array($user)) {
+                $this->returnResponse(INVALID_USER_PASS, "Email is incorrect.");
+            }
+            if(!password_verify($pass,$user['usrPass'])) {
+                $this->returnResponse(INVALID_USER_PASS, "Password is incorrect.");
+            }
+            if( $user['active'] == 0 ) {
+                $this->returnResponse(USER_NOT_ACTIVE, "User is not activated. Please contact to admin.");
+            }
+            $data=$this->generateToken($user);
+            $this->returnResponse(SUCCESS_RESPONSE, $data);
+        } catch (Exception $e) {
+            $this->throwError(JWT_PROCESSING_ERROR, $e->getMessage());
+        }
+    }
+    public function userAuth() {
+        try {
+            $user_id = $this->param['uid'];
+            $token = $this->getBearerToken();
+            $payload = JWT::decode($token, (SECRETE_KEY.$user_id.SECRETE_KEY), ['HS256']);
+            //$stmt = $this->dbConn->prepare("SELECT  id,active FROM users WHERE id = :userId");
+            $stmt = $this->dbConn->prepare("SELECT users.id AS id ,users.usrPass AS usrPass,users.active AS active ,user_role.roleNm AS role ,acc_entry.entryNm AS usrName FROM users JOIN acc_entry join user_role on acc_entry.id=users.entry_id and user_role.id=users.role_id WHERE users.id = :userId");
+            $stmt->bindParam(":userId", $payload->userId);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!is_array($user)) {
+                $this->returnResponse(INVALID_USER_PASS, "This user is not found in our database.");
+            }
+            if( $user['active'] == 0 ) {
+                $this->returnResponse(USER_NOT_ACTIVE, "This user may be decactived. Please contact to admin.");
+            }
+            $this->userId = $payload->userId;
+            $data=$this->generateToken($user);
+            $this->returnResponse(SUCCESS_RESPONSE, $data);
+            //DBService::closeCon();
+        } catch (Exception $e) {
+             //DBService::closeCon();
+            $this->throwError(ACCESS_TOKEN_ERRORS, $e->getMessage());
+        }
+    }
  
 }
 ?>
