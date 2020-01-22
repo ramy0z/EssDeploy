@@ -9,6 +9,8 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LoggedGuard } from './guards/logged.guard';
+
 import { MyOrderComponent } from './views/orders/myorder.component';
 import { MywalletComponent } from './views/accounts/mywallet/mywallet.component';
 import { MyaccountComponent } from './views/accounts/myaccount/myaccount.component';
@@ -22,6 +24,7 @@ import { FaqComponent } from './views/pages/faq/faq.component';
 import { PickupLocationsComponent } from './views/pages/pickup-locations/pickup-locations.component';
 import { PrivacyPolicyComponent } from './views/pages/privacy-policy/privacy-policy.component';
 import { TermsConditionsComponent } from './views/pages/terms-conditions/terms-conditions.component';
+import { LoggedChildGuard } from './guards/loggedchild.guard';
 
 export const routes: Routes = [
   {path: '',redirectTo: 'dashboard',pathMatch: 'full',},
@@ -29,7 +32,7 @@ export const routes: Routes = [
   { path: '500',component: P500Component,data: {title: 'Page 500'}},
   {path: 'login',component: LoginComponent,canActivate: [AuthGuard],data: {title:  'الدخول'}},
   { path: 'register',component: RegisterComponent,data: {title: 'تسجيل الدخول'}},
-  {path: '',component: DefaultLayoutComponent,data: {title: 'الصفحة الرئيسية'},
+  {path: '',component: DefaultLayoutComponent,canActivate: [LoggedGuard] ,canActivateChild :[LoggedChildGuard],data: {title: 'الصفحة الرئيسية'},
     children: [
       { path: 'orderprint',component: OrderPrintComponent,data: {title: 'طلب طباعة'}} ,
       { path: 'myorder',component: MyOrderComponent,data: {title: 'طلباتى'}} ,

@@ -6,11 +6,11 @@ include_once './config/database.php';
 include_once "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+// header("Access-Control-Allow-Origin: *");
+// header("Content-Type: application/json; charset=UTF-8");
+// header("Access-Control-Allow-Methods: POST");
+// header("Access-Control-Max-Age: 3600");
+// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require_once('constants.php');
 class Rest {
@@ -21,6 +21,9 @@ class Rest {
     protected $dbConn;
     protected $userId;
     public function __construct() {
+        if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            $this->returnResponse(200, 'I`M ON!');
+        }
         if($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->throwError(REQUEST_METHOD_NOT_VALID, 'Request Method is not valid.');
         }
@@ -77,6 +80,11 @@ class Rest {
                     $this->throwError(VALIDATE_PARAMETER_DATATYPE, "Datatype is not valid for " . $fieldName . '. It should be numeric.');
                 }
                 break;
+            case EMAIL:
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    $this->throwError(VALIDATE_PARAMETER_DATATYPE, "Datatype is not valid for " . $fieldName . '. It should like info@example.com .');
+                }
+                break;
             case STRING:
                 if(!is_string($value)) {
                     $this->throwError(VALIDATE_PARAMETER_DATATYPE, "Datatype is not valid for " . $fieldName . '. It should be string.');
@@ -91,21 +99,27 @@ class Rest {
     }
     Public function validateRequest() {
         $data = json_decode($this->request, true);
-        if(isset($_SERVER['CONTENT_TYPE']) == ' multipart/form-data' &&  $data['name'] == "upload_image" ) {
+        if( !isset($data) ){
+            $this->throwError(API_NAME_REQUIRED, "API Object is Invalid.");
         }
-        else if(isset($_SERVER['CONTENT_TYPE']) != 'application/json') {
-            $this->throwError(REQUEST_CONTENTTYPE_NOT_VALID, 'Request content type is not valid');
-        }
-        else {
-            if(!isset($data['name']) || $data['name'] == "") {
-            $this->throwError(API_NAME_REQUIRED, "API name is required.");
+        else{
+            if(isset($_SERVER['CONTENT_TYPE']) == ' multipart/form-data' &&  $data['name'] == "upload_image" ) {
             }
-            $this->serviceName = $data['name'];
-            if(!isset($data['param']) || !is_array($data['param'])) {
-                $this->throwError(API_PARAM_REQUIRED, "API PARAM is required.");
+            else if(isset($_SERVER['CONTENT_TYPE']) != 'application/json') {
+                $this->throwError(REQUEST_CONTENTTYPE_NOT_VALID, 'Request content type is not valid');
             }
-            $this->param = $data['param'];
+            else {
+                if(!isset($data['name']) || $data['name'] == "") {
+                    $this->throwError(API_NAME_REQUIRED, "API name is required.");
+                }
+                $this->serviceName = $data['name'];
+                if(!isset($data['param']) || !is_array($data['param'])) {
+                    $this->throwError(API_PARAM_REQUIRED, "API PARAM is required.");
+                }
+                $this->param = $data['param'];
+            }
         }
+        
     }
     public function validateToken() {
         try {
@@ -148,8 +162,8 @@ class Rest {
         $token = JWT::encode($paylod, SECRETE_KEY);
         $refreshtToken = JWT::encode($paylod2,(SECRETE_KEY.$user['id'].SECRETE_KEY));
         
-        return $data = ['token' => $token,'refreshtToken' => $refreshtToken,
-                'uid'=>$user['id'],'urole'=>$user['role'] ];
+        return $data = ['JWT_TOKEN' => $token,'REFRESH_TOKEN' => $refreshtToken,
+                'UID'=>$user['id'],'UROLE'=>$user['role'] ,'UNAME'=>$user['UNAME'] ];
     }
     public function processApiAdmin() {
         try {
@@ -173,6 +187,7 @@ class Rest {
             }
             $rMethod->invoke($api);
         } catch (Exception $e) {
+            echo $e;
             $this->throwError(API_DOST_NOT_EXIST, "API does not exist.");
         }
         
@@ -180,33 +195,35 @@ class Rest {
     public function throwError($code, $message) {
         header("content-type: application/json");
         http_response_code($code);
-        $errorMsg = json_encode(['error' => ['status'=>$code, 'message'=>$message]]);
+        $errorMsg = json_encode(['error' => ['status'=>$code, 'error'=>$message]]);
         echo $errorMsg; exit;
     }
     public function returnResponse($code, $data) {
         header("content-type: application/json");
         http_response_code($code);
-        $response = json_encode(['resonse' => ['status' => $code, "result" => $data]]);
+        $response = json_encode(['response' => ['status' => $code, "result" => $data]]);
         echo $response; exit;
     }
 
     public function login() {
-        $email = $this->validateParameter('email', $this->param['email'], STRING);
+        $userId = $this->validateParameter('userId', $this->param['userId'], STRING);
         $pass = $this->validateParameter('pass', $this->param['pass'], STRING);
         try {
-            $stmt = $this->dbConn->prepare("SELECT users.id AS id ,users.usrPass AS usrPass,users.active AS active ,user_role.roleNm AS role ,acc_entry.entryNm AS usrName FROM users JOIN acc_entry join user_role on acc_entry.id=users.entry_id and user_role.id=users.role_id WHERE users.email = :email");
-            $stmt->bindParam(":email", $email);
+            $stmt = $this->dbConn->prepare("SELECT users.id AS id ,users.usrPass AS usrPass,
+            users.active AS active ,user_role.roleNm AS role ,acc_entry.entryNm AS usrName FROM 
+            users JOIN acc_entry join user_role on acc_entry.id=users.entry_id and user_role.id=users.role_id WHERE users.email = :userData OR phone=:userData OR entryNm=:userData ");
+            $stmt->bindParam(":userData", $userId);
             //$stmt->bindParam(":pass", $pass);
             $stmt->execute(); //$password_hash = password_hash($password, PASSWORD_BCRYPT);AND usrPass = :pass
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if(!is_array($user)) {
-                $this->returnResponse(INVALID_USER_PASS, "Email is incorrect.");
+                $this->throwError(INVALID_USER_PASS, "Invalid User Identity.");
             }
             if(!password_verify($pass,$user['usrPass'])) {
-                $this->returnResponse(INVALID_USER_PASS, "Password is incorrect.");
+                $this->throwError(INVALID_USER_PASS, "Password is incorrect.");
             }
             if( $user['active'] == 0 ) {
-                $this->returnResponse(USER_NOT_ACTIVE, "User is not activated. Please contact to admin.");
+                $this->throwError(USER_NOT_ACTIVE, "User is not activated. Please contact to admin.");
             }
             $data=$this->generateToken($user);
             $this->returnResponse(SUCCESS_RESPONSE, $data);

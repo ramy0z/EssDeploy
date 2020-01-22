@@ -7,7 +7,6 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginServiceService } from './services/login-service.service';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -50,10 +49,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule ,ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
 
-import {JwtModule} from '@auth0/angular-jwt';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth.service';
-import { TokenInterceptor } from './services/token.interceptor';
 import { MyOrderComponent } from './views/orders/myorder.component';
 import { MyaccountComponent } from './views/accounts/myaccount/myaccount.component';
 import { SecurityInfoComponent } from './views/accountSetting/security-info/security-info.component';
@@ -67,11 +64,18 @@ import { PickupLocationsComponent } from './views/pages/pickup-locations/pickup-
 import { PrivacyPolicyComponent } from './views/pages/privacy-policy/privacy-policy.component';
 import { TermsConditionsComponent } from './views/pages/terms-conditions/terms-conditions.component';
 import { ContactUsComponent } from './views/pages/contact-us/contact-us.component';
+import { LoggedGuard } from './guards/logged.guard';
+import { LoggedChildGuard } from './guards/loggedchild.guard';
+import { TokenInterceptor } from './interceptor/token.interceptor';
+import { HttpErrorInterceptor } from './interceptor/error-interceptor';
+import { MatDialogModule } from '@angular/material';
+import { ErrorDialogService } from './containers/error-dialog/errordialog.service';
 
  @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
@@ -124,16 +128,21 @@ import { ContactUsComponent } from './views/pages/contact-us/contact-us.componen
     TermsConditionsComponent,
     ContactUsComponent,
   ],
+  entryComponents: [
+		
+	],
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  } , LoginServiceService ,AuthGuard,
-      AuthService,
-      {
-        provide: HTTP_INTERCEPTORS,
+  }  ,AuthGuard, LoggedGuard,LoggedChildGuard,
+      AuthService,ErrorDialogService,
+      { provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,
         multi: true
-      }],
+      },{ provide: HTTP_INTERCEPTORS,
+         useClass: HttpErrorInterceptor,
+          multi: true 
+        }],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

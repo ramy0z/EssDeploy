@@ -11,6 +11,7 @@
 	define('BOOLEAN', 	'1');
 	define('INTEGER', 	'2');
 	define('STRING', 	'3');
+	define('EMAIL', 	'4');
 	/*Error Codes*/
 	define('REQUEST_METHOD_NOT_VALID',		        100);
 	define('REQUEST_CONTENTTYPE_NOT_VALID',	        101);

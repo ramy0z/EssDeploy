@@ -1,4 +1,6 @@
 export class Tokens {
-  jwt: string;
-  refreshToken: string;
+  JWT_TOKEN: string;
+  REFRESH_TOKEN: string;
+  UID:string;
+  UROLE:string;
 }

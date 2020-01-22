@@ -56,7 +56,7 @@ use PHPMailer\PHPMailer\Exception;
                     $register->signUpTempCustomer();
                 }
             }
-            else {$register->throwError(REQUEST_METHOD_NOT_FOUND, " THIS REQUEST NOT VALID");}
+            else {$register->throwError(REQUEST_METHOD_NOT_FOUND, "THIS REQUEST NOT VALID");}
         }
     }
     catch (Exception $e) {
@@ -69,9 +69,10 @@ use PHPMailer\PHPMailer\Exception;
 
     public function signUpCustomers($data){
         try {
-            $uName = $this->validateParameter('uName', $data['uName'], STRING);
-            $email = $this->validateParameter('email', $data['email'], STRING);
-            $userPass = $this->validateParameter('password', $data['usrPass'], STRING);
+            $uName = $this->validateParameter('uName', $data['uName'], STRING,true);
+            $email = $this->validateParameter('email', $data['email'], STRING,true);
+            $userPhone = $this->validateParameter('phone', $data['phone'], INTEGER ,true);
+            $userPass = $this->validateParameter('password', $data['usrPass'], STRING,true);
             $conn= DBService::getCon();
             $conn->beginTransaction();
 
@@ -81,21 +82,15 @@ use PHPMailer\PHPMailer\Exception;
             $stmt->execute();
             $entry_id = $conn->lastInsertId();
 
-            $sql="INSERT INTO users (email, usrPass ,entry_id ,role_id ,active) VALUES (:email , :usrPass , :entry_id,5 ,1)";
+            $sql="INSERT INTO users (email, usrPass,phone,entry_id ,role_id ,active) VALUES (:email , :usrPass ,:phone, :entry_id,5 ,1)";
             $stmt = $conn->prepare($sql);
             //$password_hash = password_hash($userPass, PASSWORD_BCRYPT);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':usrPass', $userPass);
+            $stmt->bindParam(':phone', $userPhone);
             $stmt->bindParam(':entry_id', $entry_id);
             $stmt->execute();
             $uId = $conn->lastInsertId();
-
-             // upsate users temp
-             $sql="UPDATE acc_entry SET user_id=:uid WHERE id=:id";
-             $stmt =  $this->dbConn->prepare($sql);
-             $stmt->bindParam(':uid', $uId );
-             $stmt->bindParam(':id', $entry_id );
-             $stmt->execute();
 
             // upsate users temp
             $sql="UPDATE users_temp SET status=1 ,joinDt=now() WHERE id=:id";
@@ -173,24 +168,27 @@ use PHPMailer\PHPMailer\Exception;
 
     public function signUpTempCustomer() {
         try{
-            $returnVal= $this->checkMailUserExist( $this->param['email'] , $this->param['uName']);
+            $uName = $this->validateParameter('uName', $this->param['uName'], STRING ,true);
+            $email = $this->validateParameter('email', $this->param['email'], EMAIL ,true);
+            $phone = $this->validateParameter('phone', $this->param['phone'], INTEGER ,true);
+            $userPass = $this->validateParameter('password', $this->param['password'], STRING ,true);
+
+            $returnVal= $this->checkMailUserExist( $this->param['email'] , $this->param['uName'] ,$this->param['phone'] );
             if( is_array($returnVal) ){
                 $this->throwError(FAILD_RESPONSE, $returnVal[1]);
             }
             else{
                 $conn= DBService::getCon();
                 $conn->beginTransaction();
-                $uName = $this->validateParameter('uName', $this->param['uName'], STRING);
-                $email = $this->validateParameter('email', $this->param['email'], STRING);
-                $userPass = $this->validateParameter('password', $this->param['password'], STRING);
                 $password_hash = password_hash($userPass, PASSWORD_BCRYPT);
                 $active_code=$this->generate_rand();
-                $sql="INSERT INTO users_temp (uName,usrPass,email,active_code) VALUES 
-                        (:uName,:usrPass,:email,:active_code)";
+                $sql="INSERT INTO users_temp (uName,usrPass,email,phone,active_code) VALUES 
+                        (:uName,:usrPass,:email,:phone,:active_code)";
                 $stmt =  $this->dbConn->prepare($sql);
                 $stmt->bindParam(':uName', $uName);
                 $stmt->bindParam(':usrPass', $password_hash);
                 $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':phone', $phone);
                 $stmt->bindParam(':active_code', $active_code);
                 $stmt->execute();
                 //send Email to user with varification code
@@ -220,7 +218,7 @@ use PHPMailer\PHPMailer\Exception;
             }
         }
         catch (PDOException $e) {
-            //echo $e;
+            echo $e;
             $conn->rollback();
             $message ='Sorry ,Server Faild To Create Your Account. Please, contact Your Provider.';
             $this->throwError(CATCH_DB_ERROR, $message);
@@ -244,46 +242,55 @@ use PHPMailer\PHPMailer\Exception;
             else return [false , "Sorry, Faild To Verify Your Account. Please, contact Your Provider."];
         }
     }
-    public function checkMailUserExist($mail ,$userName) {
-        if (isset($mail) && isset($userName)) {
+    public function checkMailUserExist($mail ,$userName ,$phone) {
+        if (isset($mail) && isset($userName) && isset($phone)) {
             $this->dbConn = DBService::getCon();
-            $sql="SELECT email ,uName , status FROM users_temp WHERE uName=:userName OR email =:email";
+            $sql="SELECT email ,uName ,phone, status FROM users_temp WHERE uName=:userName OR email =:email OR phone=:phone";
             $stmt = $this->dbConn->prepare($sql);
             $stmt->bindParam(':email', $mail);
             $stmt->bindParam(':userName', $userName);
+            $stmt->bindParam(':phone', $phone);
             $stmt->execute();
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if( count($data)==0 ){ return false;}
             elseif( count($data)==1 ){
                 $data=$data[0];
-                if($data['status']==1){
-                    if( $data['email'] ==$mail && $data['nName']==$userName){
-                        $message ='There Is Active Account Exist Before.';
+                $message='';        $mdg=[];
+                if( $data['email'] ==$mail && $data['uName']==$userName && $data['phone']==$phone){
+                    $message =($data['status']==1)?'There Is ACTIVE Account Exist Before Has This Data.':'This INACTIVE Account Exist Before. But It Not Active Yet, Check Your Email To Complete Activation.';
+                }else{
+                    if($data['uName'] ==$userName){
+                        $msg[] =' USER NAME ';
                     }
-                    elseif($data['email'] ==$mail){
-                        $message ='This Active Email Exist Before. Please, Change Email And Try Again.';
+                    if($data['email'] ==$mail){
+                        $msg[] =' EMAIL ';
                     }
-                    else{
-                        $message ='This Active User Name Exist Before. Please, Change User Name And Try Again.';
+                    if($data['phone'] ==$phone){
+                        $msg[] =' PHONE ';
                     }
-                    return [true , $message];
+                    $message ='This '.implode(",", $msg).' Exist Before. Please, Change Invalid Data And Try Again.';
                 }
-                else if($data['status']==0){ //stats false ;
-                    if($data['email'] ==$mail && $data['nName']==$userName){
-                        $message ='This Account Exist Before. But It Not Active Yet, Check Your Email To Complete Activation.';
-                    }
-                    elseif($data['email'] ==$mail){
-                        $message ='This Inactive Email Exist Before. Please, Change Email And Try Again.';
-                    }
-                    else{
-                        $message ='This Inactive User Name Exist Before. Please, Change User Name And Try Again.';
-                    }
-                    return [true , $message];
-                }
+                return [true , $message];
             }
             elseif( count($data)>1 ) {
-                //count($data)> 1
-                $message ='This Email And User Name Exist Before. Please, Change Email And User Name Then Try Again.';
+                $dataArr=[];        $msg='';
+                foreach($data as $valueobj){
+                    foreach($valueobj as $key => $value){
+                        if(!in_array($key, $dataArr, true)){
+                            $dataArr[$key]= $key;
+                        }
+                    }
+                }
+                if($dataArr['uName'] =='uName'){
+                    $msg .=' USER NAME -';
+                }
+                if($dataArr['email'] =='email'){
+                    $msg .=' EMAIL -';
+                }
+                if($dataArr['phone'] =='phone'){
+                    $msg .=' PHONE -';
+                }
+                $message ='This '. $msg .'> Exist Before. Please, Change Invalid Data And Try Again.';
                 return [true , $message];
             }
         }
@@ -328,100 +335,18 @@ use PHPMailer\PHPMailer\Exception;
     public function throwError($code, $message) {
         header("content-type: application/json");
         http_response_code($code);
-        $errorMsg = json_encode(['error' => ['status'=>$code, 'message'=>$message]]);
+        $errorMsg = json_encode(['error' => ['status'=>$code, 'error'=>$message]]);
         echo $errorMsg;
         exit;
     }
     public function returnResponse($code, $data) {
         header("content-type: application/json");
         http_response_code($code);
-        $response = json_encode(['resonse' => ['status' => $code, "result" => $data]]);
+        $response = json_encode(['response' => ['status' => $code, "result" => $data]]);
         echo $response;
         exit;
     }
  }
 
 
-?>
-
-
-<?php
-// include_once './config/database.php';
-// require "../vendor/autoload.php";
-// use \Firebase\JWT\JWT;
-
-// header("Access-Control-Allow-Origin: *");
-// header("Content-Type: application/json; charset=UTF-8");
-// header("Access-Control-Allow-Methods: POST");
-// header("Access-Control-Max-Age: 3600");
-// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
-
-// $email = '';
-// $password = '';
-
-// $databaseService = new DatabaseService();
-// $conn = $databaseService->getConnection();
-
-
-
-// $data = json_decode(file_get_contents("php://input"));
-
-// $email = $data->email;
-// $password = $data->password;
-
-// $table_name = 'Users';
-
-// $query = "SELECT id, first_name, last_name, password FROM " . $table_name . " WHERE email = ? LIMIT 0,1";
-
-// $stmt = $conn->prepare( $query );
-// $stmt->bindParam(1, $email);
-// $stmt->execute();
-// $num = $stmt->rowCount();
-
-// if($num > 0){
-//     $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//     $id = $row['id'];
-//     $firstname = $row['first_name'];
-//     $lastname = $row['last_name'];
-//     $password2 = $row['password'];
-
-//     if(password_verify($password, $password2))
-//     {
-//         $secret_key = "YOUR_SECRET_KEY";
-//         $issuer_claim = "THE_ISSUER"; // this can be the servername
-//         $audience_claim = "THE_AUDIENCE";
-//         $issuedat_claim = time(); // issued at
-//         $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-//         $expire_claim = $issuedat_claim + 60; // expire time in seconds
-//         $token = array(
-//             "iss" => $issuer_claim,
-//             "aud" => $audience_claim,
-//             "iat" => $issuedat_claim,
-//             "nbf" => $notbefore_claim,
-//             "exp" => $expire_claim,
-//             "data" => array(
-//                 "id" => $id,
-//                 "firstname" => $firstname,
-//                 "lastname" => $lastname,
-//                 "email" => $email
-//         ));
-
-//         http_response_code(200);
-
-//         $jwt = JWT::encode($token, $secret_key);
-//         echo json_encode(
-//             array(
-//                 "message" => "Successful login.",
-//                 "jwt" => $jwt,
-//                 "email" => $email,
-//                 "expireAt" => $expire_claim
-//             ));
-//     }
-//     else{
-
-//         http_response_code(401);
-//         echo json_encode(array("message" => "Login failed.", "password" => $password));
-//     }
-// }
 ?>

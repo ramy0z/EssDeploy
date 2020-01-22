@@ -18,16 +18,47 @@ use \Firebase\JWT\JWT;
 			echo "Dataaaaaaaaaa of app get_App_init";
 		}
 
+		public function ProcessNewUser(){
+			require_once('./models/user.php');
+			//print_r($this->param);
+			$uName = $this->validateParameter('User Name', $this->param['uName'], STRING, true);
+			$email = $this->validateParameter('Email', $this->param['email'], EMAIL, true);
+			$userPhone = $this->validateParameter('Phone', $this->param['phone'], INTEGER, true);
+			$userRole = $this->validateParameter('Role', $this->param['role'], INTEGER, true);
+			$userPass = $this->validateParameter('User Pass', $this->param['uPass'], STRING, true);
+			$user_type = $this->validateParameter('User Type', $this->param['uType'], STRING, true);//cust , sup , emp ;
+			
+			$user= new User();
+			$returnVal= $user->checkMailUserExist( $email ,$uName ,$userPhone);
+            if( is_array($returnVal) ){
+                $this->throwError(FAILD_RESPONSE, $returnVal[1]);
+            }
+            else{
+				
+				$user->setuName($uName);
+				$user->setEmail($email);
+				$user->setPhone($userPhone);
+				$user->setRole($userRole);
+				$user->setuPass($setuPass);
+				$user->setUserType($user_type);
+				if(!$user->createUser()) {
+					$message = 'Failed to Process NEW User Data.';
+				} else {
+					$message = "Process Done Successfully.";
+				}
+				$this->returnResponse(SUCCESS_RESPONSE, $message);
+			}
+		}
 		public function ProcessUserMeta(){
 			require_once('./models/user.php');
-			print_r($this->param);
+			//print_r($this->param);
 			$user_id = $this->validateParameter('uid', $this->param['uid'], INTEGER, true);
 			$name = $this->validateParameter('name', $this->param['name'], STRING, false);
 			$addr = $this->validateParameter('addr', $this->param['addr'], STRING, false);
 			$mobile = $this->validateParameter('mobile', $this->param['mobile'], INTEGER, false);
-
+			// echo "Dataaaaaaaaaa of app get_App_init";
 			$user= new User();
-			$user-> setId($user_id);
+			$user->setId($user_id);
 			$user->setName($name);
 			$user->setEmail($email);
 			$user->setAddress($addr);
@@ -44,7 +75,7 @@ use \Firebase\JWT\JWT;
 	
 		public function addCustomer() {
 			$name = $this->validateParameter('name', $this->param['name'], STRING, false);
-			$email = $this->validateParameter('email', $this->param['email'], STRING, false);
+			$email = $this->validateParameter('email', $this->param['email'], EMAIL, false);
 			$addr = $this->validateParameter('addr', $this->param['addr'], STRING, false);
 			$mobile = $this->validateParameter('mobile', $this->param['mobile'], INTEGER, false);
 			$cust = new Customer;

@@ -2,6 +2,8 @@ import { Component, OnDestroy, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { navItemsEn, navItemsAr } from '../../_nav';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +16,7 @@ export class DefaultLayoutComponent implements OnDestroy  {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
-  constructor(private translate: TranslateService , @Inject(DOCUMENT) _document?: any) {
+  constructor(private authService: AuthService, private router: Router,private translate: TranslateService , @Inject(DOCUMENT) _document?: any) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = _document.body.classList.contains('sidebar-minimized');
@@ -31,5 +33,9 @@ export class DefaultLayoutComponent implements OnDestroy  {
   }
   ngOnDestroy(): void {
     this.changes.disconnect();
+  }
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
