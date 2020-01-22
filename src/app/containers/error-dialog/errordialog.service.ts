@@ -5,19 +5,22 @@ import { ErrorDialogComponent } from './errordialog.component';
 @Injectable()
 export class ErrorDialogService {
     public isDialogOpen: Boolean = false;
+    public thisData ;
     constructor(public dialog: MatDialog) { }
     openDialog(data): any {
         if (this.isDialogOpen) {
             return false;
         }
+        this.thisData=data;
         this.isDialogOpen = true;
         const dialogRef = this.dialog.open(ErrorDialogComponent, {
-            width: '300px',
+            // height: '400px',
+            width: '600px',
             data: data
         });
-        this.isDialogOpen = false;
+
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
+            console.log('The dialog was closed',result);
             this.isDialogOpen = false;
             let animal;
             animal = result;

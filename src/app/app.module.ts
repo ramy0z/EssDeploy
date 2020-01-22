@@ -70,6 +70,7 @@ import { TokenInterceptor } from './interceptor/token.interceptor';
 import { HttpErrorInterceptor } from './interceptor/error-interceptor';
 import { MatDialogModule } from '@angular/material';
 import { ErrorDialogService } from './containers/error-dialog/errordialog.service';
+import { ErrorDialogComponent } from './containers/error-dialog/errordialog.component';
 
  @NgModule({
   imports: [
@@ -127,9 +128,10 @@ import { ErrorDialogService } from './containers/error-dialog/errordialog.servic
     PrivacyPolicyComponent,
     TermsConditionsComponent,
     ContactUsComponent,
+    ErrorDialogComponent,
   ],
   entryComponents: [
-		
+		ErrorDialogComponent
 	],
   providers: [{
     provide: LocationStrategy,

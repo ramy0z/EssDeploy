@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { of, Observable, throwError } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { catchError, mapTo, tap, map } from 'rxjs/operators';
 import { config } from './../config';
 import { Tokens } from '../models/tokens';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +17,6 @@ export class AuthService {
   private loggedUser: string;
 
   constructor(private http: HttpClient) {
-  }
-  static createHeaders() {
-    const httpHeaders = new HttpHeaders();
-    httpHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
-    //httpHeaders.append('Authorization', 'Bearer ' + localStorage.getItem(environment.authTokenKey));
-    console.log(httpHeaders)
-    return httpHeaders
   }
   login(user): Observable<boolean> {
     
@@ -46,7 +38,7 @@ export class AuthService {
     //`${config.apiUrl}`
     return this.http.post<any>(`${config.apiUrl}`, obj ,httpOptions )
       .pipe(
-        tap(response => this.doLoginUser('uname',response['response']['result'])),
+        tap(response => this.doLoginUser('uname',response['response']['message'])),
         mapTo(true),
         catchError(error => {
           return of(false);

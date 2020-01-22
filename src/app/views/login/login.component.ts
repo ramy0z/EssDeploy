@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', [Validators.required,Validators.pattern('^(?![0-9]+$)[A-Za-z0-9_-]{6,20}$')]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -26,19 +26,22 @@ export class LoginComponent implements OnInit {
 
 
   login() {
+    
     this.isLoading=true;
+    if (this.loginForm.invalid) { this.isLoading = false; return;}
     this.authService.login(
       {username: this.f.username.value,
         password: this.f.password.value
       }
     )
     .subscribe(success => {
+      this.isLoading=false;
       if (success) {
-        this.isLoading=false;
         this.router.navigate(['/']);
       }
     },
     error => {
+      this.isLoading=false;
       console.log(error);
     },
     () => {// 'onCompleted' callback.// No errors, route to new page here

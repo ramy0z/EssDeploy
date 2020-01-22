@@ -195,13 +195,13 @@ class Rest {
     public function throwError($code, $message) {
         header("content-type: application/json");
         http_response_code($code);
-        $errorMsg = json_encode(['error' => ['status'=>$code, 'error'=>$message]]);
+        $errorMsg = json_encode(['error' => ['status'=>$code, 'message'=>$message]]);
         echo $errorMsg; exit;
     }
     public function returnResponse($code, $data) {
         header("content-type: application/json");
         http_response_code($code);
-        $response = json_encode(['response' => ['status' => $code, "result" => $data]]);
+        $response = json_encode(['response' => ['status' => $code, "message" => $data]]);
         echo $response; exit;
     }
 

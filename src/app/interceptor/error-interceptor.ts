@@ -24,17 +24,25 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                     // Client Side Error
                     if (error.error instanceof ErrorEvent) {
                         errMsg = `Error: ${error.error.message}`;
+                        res_server.title='Client Side ERROR';
+                        res_server.message='Client error occurred. Please Reload Your Browser.';
+                        this.errorDialogService.openDialog(res_server);
                     }
                     else {  // Server Side Error
                         //  console.log(error)
                          if(error.status==0)
-                         { 
+                         {  res_server.title='NETWORK CONNECTION ERROR';
                             res_server.status='0';
-                            res_server.error='A server error occurred.  Please press Reload in your browser.';
+                            res_server.message='A server error occurred.  Please Reload Your Browser.';
                             this.errorDialogService.openDialog(res_server);
                          }
                          else{
-                            errMsg = `Error Code: ${res_server.status},  Message: ${res_server.error}`;
+                            if (res_server.status <200 && res_server.status >=100) {
+                                res_server.title='Requested Data NOT VALID';
+                            }else if(res_server.status <303 && res_server.status >=300){
+                                res_server.title='Authorization Processing ERROR';
+                            }
+
                             this.errorDialogService.openDialog(res_server);
                          }
                         // if (error.status == 500) {
@@ -54,9 +62,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                         // }
                         
                     }
-                    
-                     //window.alert(errMsg)
-
                     // return an observable
                     return throwError(res_server);
                 })

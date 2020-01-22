@@ -34,13 +34,14 @@ export class RegisterComponent {
   onSubmit() {
       this.submitted = true;
       // stop here if form is invalid
-      if (this.registerForm.invalid) {return;}
+      if (this.registerForm.invalid) { this.submitted = false; return;}
      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value))
      //alert(this.registerForm.value)
       let udata= this.registerForm.value;
       delete udata["confirmPass"];
      // console.log(udata);
       this.UserService.signUp(udata).subscribe(req=>{
+        this.submitted = false;
         console.log(req);
         alert(req);
       },
@@ -48,7 +49,8 @@ export class RegisterComponent {
         this.error=!this.error;
         this.error_message="Your Credentials Do not Match";
         console.log(this.error_message);
-      }
+      },
+      ()=>{}
     );
   }
 

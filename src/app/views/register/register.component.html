@@ -59,7 +59,9 @@
                 <div *ngIf="f.confirmPass.invalid && (f.confirmPass.dirty || f.confirmPass.touched)" class="alert alert-danger">Passwords must match</div>
 
 
-                <button type="submit"  class="btn btn-block btn-success" >Create Account</button>
+                <button type="submit"  class="btn btn-block btn-success" >Create Account 
+                  <span *ngIf="submitted"  class="spinner-border spinner-border-sm mr-1"></span>
+                </button>
                  <!-- [disabled]="!registerForm.valid" -->
               </form>
             </div>

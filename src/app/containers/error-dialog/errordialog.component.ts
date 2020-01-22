@@ -2,8 +2,9 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './errordialog.component.html'
+  selector: '',
+  templateUrl: './errordialog.component.html',
+  styleUrls: ['./errordialog.component.scss']
 })
 export class ErrorDialogComponent {
   title = 'Angular-Interceptor';
