@@ -12,12 +12,13 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   isLoading:Boolean=false;
+  submitted: boolean=false;
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required,Validators.pattern('^(?![0-9]+$)[A-Za-z0-9_-]{6,20}$')]],
+      uName: ['', [Validators.required,Validators.pattern('^(?![0-9]+$)[A-Za-z0-9_-]{6,20}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -26,11 +27,11 @@ export class LoginComponent implements OnInit {
 
 
   login() {
-    
+    this.submitted=true;
     this.isLoading=true;
     if (this.loginForm.invalid) { this.isLoading = false; return;}
     this.authService.login(
-      {username: this.f.username.value,
+      {username: this.f.uName.value,
         password: this.f.password.value
       }
     )

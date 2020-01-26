@@ -52,9 +52,9 @@
                         </div>
                     </div>
                      -->
-                    <div class="row">
-                        <div class="paper_paper_size_tab" id="paper_paper_size_tab">
-                            <h4>Paper Size</h4>
+                    <div >
+                        <div class="paper_tab" id="paper_size_tab">
+                            <span class="optionTitle">Paper Size</span>
                             <div class="row">
                                 <div class="col-xs-4 col-sm-2"><input name="paperSize" id="optSize1" class="calc-radio paperSize" type="radio"
                                         value="1" ><label for="optSize1">A5</label></div>
@@ -70,8 +70,8 @@
                                         value="6" ><label for="optSize6">A0</label></div>
                             </div>
                         </div>
-                        <div class="paper_paper_type_tab" id="paper_paper_type_tab">
-                            <h4>Paper Type</h4>
+                        <div class="paper_tab" id="paper_type_tab">
+                            <span class="optionTitle">Paper Type</span>
                             <div class="row">
                                 <div class="col-xs-6 col-sm-3"><input name="paperTypeN" id="optType1" class="calc-radio paperType" type="radio"
                                         value="1" papertypeid="1" papersizeid="2"><label for="optType1">Normal</label></div>
@@ -83,8 +83,23 @@
                                         value="3" papertypeid="3" papersizeid="2"><label for="optType3">Sticker</label></div>
                             </div>
                         </div>
-                        <div class="paper_printing_layout" id="paper_printing_layout">
-                            <h4>Printing Layout</h4>
+                        
+                        <div class="paper_tab" id="paper_colors_tab">
+                            <span class="optionTitle">Print Color</span> 
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-6"> 
+                                    <input id="black" type="radio" name="printingColors" class="calc-radio" value="1">
+                                    <label for="black"><span class="pc_1">Black</span></label>
+                                </div>
+                                 <div class="col-md-3 col-sm-3 col-xs-6">
+                                     <input id="colored" type="radio" name="printingColors" class="calc-radio" value="2">
+                                     <label for="colored"><span class="pc_2">Color</span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="paper_tab" id="paper_printing_layout">
+                            <span class="optionTitle">Printing Layout</span>
                             <div class="row">
                                 <div class="col-xs-4 col-sm-2"><input name="printingLayoutN" id="optLayout1" class="calc-radio calPri"
                                         type="radio" value="1" per="1"><label for="optLayout1"><img
@@ -108,17 +123,17 @@
                                             alt="Landscape 4 Slides"></label><span class="">Landscape 4 Slides</span></div>
                             </div>
                         </div>
-                        <div class="paper_printing_side" id="paper_printing_side">
-                            <h4>Printing Side</h4>
+                        <div class="paper_tab" id="paper_printing_side">
+                            <span class="optionTitle">Printing Side</span>
                             <div class="row">
-                                <div class="col-xs-6 col-sm-2"><input name="printingSideN" id="optSide1" class="calc-radio calPri" type="radio"
-                                        value="1" per="1"><label for="optSide1">1-Side</label></div>
-                                <div class="col-xs-6 col-sm-2"><input name="printingSideN" id="optSide2" class="calc-radio calPri" type="radio"
-                                        value="2" per="2"><label for="optSide2">2-Sided</label></div>
+                                <div class="col-md-3 col-sm-3 col-xs-6"><input name="printingSideN" id="optSide1" class="calc-radio calPri" type="radio"
+                                        value="1" per="1"><label for="optSide1">One Side</label></div>
+                                <div class="col-md-3 col-sm-3 col-xs-6"><input name="printingSideN" id="optSide2" class="calc-radio calPri" type="radio"
+                                        value="2" per="2"><label for="optSide2">Two Sides</label></div>
                             </div>
                         </div>
-                        <div class="paper_printing_binding" id="paper_printing_binding">
-                            <h4>Binding Option</h4>
+                        <div class="paper_tab" id="paper_printing_binding">
+                            <span class="optionTitle">Binding Option</span>
                             <div class="row">
                                 <div class="col-md-3 col-sm-4 col-xs-6"><input name="bindingN" id="optBinding1" class="calc-radio calPri"
                                         type="radio" value="1" price="0.00" max="0" min="0"><label for="optBinding1">
@@ -575,9 +590,9 @@
                                     </label></div>
                             </div>
                         </div>
-                        <div class="paper_printing_extra" id="paper_printing_extra">
+                        <div class="paper_tab" id="paper_printing_extra">
                             <div class="form-group"><label>
-                                    <h4>Extra Options</h4>
+                                <span class="optionTitle">Extra Options</span>
                                 </label>
                                 <div class="mt-checkbox-list">
                                     <div class="col-xs-12"><label class="mt-checkbox mt-checkbox-outline">First Page Color<input class="calPri"

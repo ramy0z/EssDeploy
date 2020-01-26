@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, Validators ,ReactiveFormsModule, FormBuilder}   from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
+import { FormGroup, Validators , FormBuilder}   from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 // import custom validator to validate that password and confirm password fields match
@@ -11,7 +10,8 @@ import { UserService } from '../../services/user.service';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  submitted = false;  
+  submitted = false; 
+  isLoading = false; 
   error:boolean=false;
   error_message: string;
   constructor( private UserService:UserService , private router:Router, private formBuilder: FormBuilder) { }
@@ -19,11 +19,10 @@ export class RegisterComponent {
   ngOnInit() {
       this.registerForm = this.formBuilder.group({
           uName: ['', [Validators.required,Validators.pattern('^(?![0-9]+$)[A-Za-z0-9_-]{6,20}$')]],
-          email: ['', [Validators.compose([
-            Validators.required,
-            Validators.email
-          ])]],
-          password: ['', [Validators.required, Validators.minLength(6)]],
+          phone: ['', [Validators.required,Validators.pattern('[0-9]+'), 
+                          Validators.min(9999999),Validators.max(99999999999999999999)]],
+          email: ['', [Validators.required,Validators.email]],
+          password: ['', [Validators.required, Validators.minLength(8)]],
           confirmPass: ['', Validators.required]
       },{validator: MustMatch('password', 'confirmPass')});
   }
@@ -32,16 +31,16 @@ export class RegisterComponent {
   get f() { return this.registerForm.controls; }
 
   onSubmit() {
+    this.isLoading=true;
       this.submitted = true;
       // stop here if form is invalid
-      if (this.registerForm.invalid) { this.submitted = false; return;}
+      if (this.registerForm.invalid) { this.isLoading=false; return;}
      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value))
      //alert(this.registerForm.value)
       let udata= this.registerForm.value;
       delete udata["confirmPass"];
      // console.log(udata);
       this.UserService.signUp(udata).subscribe(req=>{
-        this.submitted = false;
         console.log(req);
         alert(req);
       },
@@ -50,7 +49,9 @@ export class RegisterComponent {
         this.error_message="Your Credentials Do not Match";
         console.log(this.error_message);
       },
-      ()=>{}
+      ()=>{this.isLoading=false;
+        this.submitted = false;
+      }
     );
   }
 

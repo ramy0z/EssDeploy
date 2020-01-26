@@ -1,3 +1,11 @@
+.paper_tab{
+    margin-bottom: 20px;
+}
+.optionTitle {
+    font-size: 18px;
+    display: block;
+    margin: 10px 0;
+}
 .mt-element-overlay .mt-overlay-1 .mt-overlay {
     width: 100%;
     height: 100%;
@@ -75,11 +83,13 @@
 .calc-radio:not(checked)+label {
     border: 1px solid #d5d5d5;
     color: #646464;
-}
-.paper_paper_size_tab label, .paper_paper_type_tab label, .paper_printing_color_tab label, .paper_printing_side label, .paper_printing_paper_color label {
-    // width: 100%;
+    width: 100%;
     text-align: center;
+    border-radius: 5px;
+    font-weight: 500;
+    line-height: 2;
 }
+
 .calc-radio+label {
     font-weight: 150;
     padding: 6px 15px 6px 15px;
