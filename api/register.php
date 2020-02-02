@@ -336,13 +336,15 @@ use PHPMailer\PHPMailer\Exception;
         header("content-type: application/json");
         http_response_code($code);
         $errorMsg = json_encode(['error' => ['status'=>$code, 'message'=>$message]]);
+        DBService::closeCon();
         echo $errorMsg;
         exit;
     }
     public function returnResponse($code, $data) {
         header("content-type: application/json");
-        http_response_code($code);
+        http_response_code(200);
         $response = json_encode(['response' => ['status' => $code, "message" => $data]]);
+        DBService::closeCon();
         echo $response;
         exit;
     }

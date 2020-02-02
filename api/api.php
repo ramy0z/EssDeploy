@@ -71,6 +71,34 @@ use \Firebase\JWT\JWT;
 			$this->returnResponse(SUCCESS_RESPONSE, $message);
 		}
 
+		public	function ProcessPlaces(){
+			require_once('./models/places.php');
+			$type = $this->validateParameter('type', $this->param['type'], STRING, true);
+			$places= new Places();
+			if($type=='country'){
+				$Arr=$places->getAllCountries();
+				$this->returnResponse(SUCCESS_RESPONSE, $Arr);
+
+			}
+			elseif ($type=='state') {
+				$id = $this->validateParameter('id', $this->param['id'], INTEGER, true);
+				$places->setId($id);
+				$Arr=$places->getStatesById();
+				$this->returnResponse(SUCCESS_RESPONSE, $Arr);
+			}
+			elseif ($type=='city') {
+				$id = $this->validateParameter('id', $this->param['id'], INTEGER, true);
+				$places->setId($id);
+				$Arr=$places->getCitiesById();
+				$this->returnResponse(SUCCESS_RESPONSE, $Arr);
+			}
+			else {
+				$this->returnResponse(FAILD_RESPONSE, "Invalid Type Value");
+			}
+
+		}
+
+
 
 	
 		public function addCustomer() {

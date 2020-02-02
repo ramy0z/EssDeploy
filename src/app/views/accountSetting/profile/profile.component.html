@@ -1,183 +1,296 @@
+<div class="animated fadeIn">
+    <!-- <span class="badge badge-success">New</span> -->
 <div class="row">
-    <div class="col-sm-10 mx-auto d-block">
-        <div class="card">
-            <div class="card-header" style="text-align: center">
-                <i class="icon-user"></i>
-                <strong>My Profile</strong>
+    <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="portlet light profile-sidebar-portlet ">
+            <!-- SIDEBAR USERPIC -->
+            <div class="profile-userpic">
+                <img src="./assets/img/avatars/6.jpg" class="img-responsive" alt=""> </div>
+            <!-- END SIDEBAR USERPIC -->
+            <!-- SIDEBAR USER TITLE -->
+            <div class="profile-usertitle">
+                <div class="profile-usertitle-name"> Marcus Doe </div>
+                <div class="profile-usertitle-job"> Developer </div>
             </div>
-            <div class="card-body">
-                <div class="">
-                    <div class="row">
+            <!-- END SIDEBAR USER TITLE -->
+            <!-- SIDEBAR BUTTONS -->
+            <div class="profile-userbuttons">
+                <button type="button" class="btn btn-circle green btn-sm">Follow</button>
+                <button type="button" class="btn btn-circle red btn-sm">Message</button>
+            </div>
+            <!-- END SIDEBAR BUTTONS -->
+            <!-- SIDEBAR MENU -->
+            <div class="profile-usermenu">
+                <ul class="nav">
+                    <li>
+                        <a href="page_user_profile_1.html">
+                            <i class="icon-home"></i> Overview </a>
+                    </li>
+                    <li class="active">
+                        <a href="page_user_profile_1_account.html">
+                            <i class="icon-settings"></i> Account Settings </a>
+                    </li>
+                    <li>
+                        <a href="page_user_profile_1_help.html">
+                            <i class="icon-info"></i> Help </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- END MENU -->
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-8 col-lg-8">
+    <!-- Nav tabs -->
+    <tabset>
+        <!-- personal info -->
+        <tab>
+            <ng-template tabHeading><i class="icon-list"></i> Personal Info</ng-template>
+            <div class="card">
+                <div class="card-header" style="text-align: center">
+                    <i class="icon-user"></i>
+                    <strong>My Profile</strong>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="profileForm" action="onSubmit()" class="form-horizontal ng-untouched ng-pristine ng-valid " method="post">
+                        
+                        <div class="form-group row">
+                            <mat-form-field class="col-sm-12 col-md-10 col-lg-10 marginbotm">
+                                <input matInput type="text" placeholder="Full Name" formControlName="fullName">
+                                <mat-error *ngIf="f.fullName.errors?.required">
+                                    Full Name is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            
+                        
+                            <mat-form-field class="col-sm-12 col-md-6 col-lg-6 marginbotm">
+                                <mat-select formControlName="gender" placeholder="Gender">
+                                <mat-option value="1">Male</mat-option>
+                                <mat-option value="2">Female</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="f.gender.errors?.required">
+                                    Gender is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-sm-12 col-md-6 col-lg-6 marginbotm">
+                                <input (focus)="picker1.open()" matInput [max]="maxDt"  formControlName="birthDate" [matDatepicker]="picker1"
+                                    placeholder="Birth Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker disabled="false"#picker1></mat-datepicker>
+                                <mat-error *ngIf="f.birthDate.errors?.required">
+                                    Birth Date <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-sm-12 col-md-8 col-lg-8 marginbotm">
+                                <input matInput type="number" placeholder="Phone Number" formControlName="phone">
+                                <!-- <mat-error *ngIf="f.phone.invalid && f.phone.touched ">
+                                    Special Characters Not Allowed <br> Phone Numbers Range Between 6 and 20 
+                                </mat-error> -->
+                                <mat-error *ngIf="f.phone.errors?.required" >Phone is required</mat-error>
+                                <mat-error *ngIf="f.phone.errors?.min">Phone Max Is 8 Numbers</mat-error>
+                                <mat-error *ngIf="f.phone.errors?.max">Phone Max Is 20 Numbers</mat-error>
+                            </mat-form-field>
+                        
+                        </div>
+                        <div class="form-group row">
+                            <mat-form-field class="col-sm-6 col-md-6 col-lg-6 marginbotm">
+                                <mat-select placeholder="Country" formControlName="userContry" (selectionChange)="onCountryChange($event.value)">
+                                    <mat-option *ngFor="let row of country" [value]="row.id">
+                                        {{row.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-sm-6 col-md-6 col-lg-6 marginbotm">
+                                <mat-select placeholder="State" formControlName="userState" (selectionChange)="onStateChange($event.value)">
+                                    <!-- <mat-option ngIf="state.length==0" [value]="null">
+                                        Loading...
+                                    </mat-option> -->
+                                    <mat-option *ngFor="let row of state" [value]="row.id">
+                                        {{row.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-sm-6 col-md-6 col-lg-6 marginbotm">
+                                <mat-select placeholder="City" formControlName="userCity">
+                                    <!-- <mat-option ngIf="city.length==0" [value]="null">
+                                        Loading...
+                                    </mat-option> -->
+                                    <mat-option *ngFor="let row of city" [value]="row.id">
+                                        {{row.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-sm-6 col-md-6 col-lg-6 marginbotm">
+                                <input matInput type="text" placeholder="Street" formControlName="userStreet">
+                                <!-- <mat-error *ngIf="f.fullName.errors?.required">
+                                    Full Name is <strong>required</strong>
+                                </mat-error> -->
+                                <mat-hint>Additinal Information EX.(21 ALex St.)  </mat-hint>
+                            </mat-form-field>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-dot-circle-o"></i> Submit</button>
+                    <button class="btn btn-sm btn-danger" type="reset"><i class="fa fa-ban"></i> Reset</button>
+                </div>
+            </div>                
+        </tab>
+
+        <!-- change Avatar -->
+        <tab>
+            <ng-template tabHeading><i class="icon-user"></i> Change Avatar</ng-template>
+            <div class="card">
+                <div class="card-header" style="text-align: center">
+                    <i class="icon-location-pin"></i>
+                    <strong>Change Avatar</strong>
+                </div>
+                <div class="card-body">
+                <div class="form-group row">
+                    <!-- <div class="row">
                         <img alt="admin@bootstrapmaster.com" class="img-avatar mx-auto d-block"
                             src="assets/img/avatars/6.jpg">
                     </div>
                     <div class="row">
                         <input id="file-input" name="file-input" type="file" class="mx-auto d-block">
-                    </div>
-                </div>
-
-                <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" enctype="multipart/form-data"
-                    method="post" novalidate="">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="text-input">Frist Name</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="fNm" name="fNm" placeholder=" Enter Your Frist Name"
-                                type="text">
-                            <!-- <span class="help-block">This is a help text</span> -->
+                    </div> -->
+                    <!-- Image_url Field -->
+                    <div class="col-lg-12">
+                    <div class="fileinput item-center" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail" >
+                            <img *ngIf="imageprivew ==''" src="http://www.placehold.it/150x150/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+                            <img *ngIf="imageprivew !=''" src="{{imageprivew}}" alt="">
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="text-input">Last Name</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="lNm" name="lNm" placeholder=" Enter Your Last Name"
-                                type="text">
-                            <!-- <span class="help-block">This is a help text</span> -->
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="inline-radios">Gender</label>
-                        <div class="col-md-9 col-form-label">
-                            <div class="form-check form-check-inline mr-1" id="inline-radios">
-                                <input class="form-check-input" id="inlineRadio1" name="inline-radios" type="radio"
-                                    value="1">
-                                <label class="form-check-label" for="inlineRadio1">Male</label>
-                            </div>
-                            <div class="form-check form-check-inline mr-1">
-                                <input class="form-check-input" id="inlineRadio2" name="inline-radios" type="radio"
-                                    value="2">
-                                <label class="form-check-label" for="inlineRadio2">Female</label>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="text-input">Mobile Number</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="phoneNum" name="phoneNum"
-                                placeholder=" Phone Number:(9665XXXXXX)" type="number">
-                            <!-- <span class="help-block">This is a help text</span> -->
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="date-input">BirthDate</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="bData" name="bData" placeholder="Enter Your BirthData"
-                                type="date">
-                            <!-- <span class="help-block">Please enter a valid date</span> -->
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="select1">Your Country</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="select1" name="select1">
-                                <option value="0" ng-reflect-value="0">Please select</option>
-                                <option value="1" ng-reflect-value="1">Option #1</option>
-                                <option value="2" ng-reflect-value="2">Option #2</option>
-                                <option value="3" ng-reflect-value="3">Option #3</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="city" class="col-form-label col-sm-3">City</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="city" placeholder="Enter your city" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="street" class="col-form-label col-sm-3">Street</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="street" placeholder="Enter street name" type="text">
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="card-footer">
-                <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-dot-circle-o"></i> Submit</button>
-                <button class="btn btn-sm btn-danger" type="reset"><i class="fa fa-ban"></i> Reset</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header" style="text-align: center">
-                <i class="icon-location-pin"></i>
-                <strong>My Addresses</strong>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <div class="list-group-item list-group-item-accent-success list-group-item-divider">
                         <div>
-                            <i class="icon-credit-card"></i>
-                            <strong >المستلم احمدمحمد عبدالله الحصرى </strong>
+                            <label for="file-upload" class="custom-file-upload fileinput-new btn btn-success btn-s">
+                            <i class="fa fa-cloud-upload"></i> Upload Image</label>
+                            <input id="file-upload" type="file" name="file" #input_image (change)="handleUpload($event)" ng2FileSelect [uploader]="uploader"/>
                         </div>
-                        <small class="text-muted mr-3">
-                            <i class="icon-phone"></i>96652132123</small>
-                        <small class="text-muted">
-                            <i class="icon-location-pin"></i> 23st ,creativeLabs HQ - mansourah - egypt
-                        </small>
-
+                    </div>
                     </div>
                 </div>
-
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-dot-circle-o"></i> Submit</button>
+                    <button class="btn btn-sm btn-danger" type="reset"><i class="fa fa-ban"></i> Reset</button>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
+        </tab>
+
+        <!-- Addresses -->
+        <tab>
+            <ng-template tabHeading><i class="icon-location-pin"></i> Addresses</ng-template>
+            <div class="card">
+                <div class="card-header" style="text-align: center">
+                    <i class="icon-location-pin"></i>
+                    <strong>My Addresses</strong>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="list-group-item list-group-item-accent-success list-group-item-divider">
+                            <div>
+                                <i class="icon-credit-card"></i>
+                                <strong >المستلم احمدمحمد عبدالله الحصرى </strong>
+                            </div>
+                            <small class="text-muted mr-3">
+                                <i class="icon-phone"></i>96652132123</small>
+                            <small class="text-muted">
+                                <i class="icon-location-pin"></i> 23st ,creativeLabs HQ - mansourah - egypt
+                            </small>
+    
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" style="text-align: center">
+                    <i class="icon-settings "></i>
+                    <strong>Add New Adress</strong>
+                </div>
+                <div class="card-body">
+                    <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" enctype="multipart/form-data"
+                        method="post" novalidate="">
+    
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" for="text-input">Recipient Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="rNm" name="rNm" placeholder=" Enter Recipient Name"
+                                    type="text">
+                                <!-- <span class="help-block">This is a help text</span> -->
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" for="text-input">Mobile Number</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="phoneNum" name="phoneNum"
+                                    placeholder=" Phone Number:(9665XXXXXX)" type="number">
+                                <!-- <span class="help-block">This is a help text</span> -->
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" for="select1">Your Country</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="select1" name="select1">
+                                    <option value="0" ng-reflect-value="0">Please select</option>
+                                    <option value="1" ng-reflect-value="1">Option #1</option>
+                                    <option value="2" ng-reflect-value="2">Option #2</option>
+                                    <option value="3" ng-reflect-value="3">Option #3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city" class="col-form-label col-sm-3">City</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="city" placeholder="Enter your city" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="street" class="col-form-label col-sm-3">Street</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="street" placeholder="Enter street name" type="text">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-dot-circle-o"></i> Submit</button>
+                    <button class="btn btn-sm btn-danger" type="reset"><i class="fa fa-ban"></i> Reset</button>
+                </div>
+            </div>
+        </tab>
+        
+        <!-- //Change Password -->
+        <tab>
+        <ng-template tabHeading><i class="icon-lock"></i> Change Password</ng-template>
         <div class="card">
-            <div class="card-header" style="text-align: center">
-                <i class="icon-settings "></i>
-                <strong>Add New Adress</strong>
+            <div class="card-header">
+                <strong>Horizontal</strong> Form
             </div>
             <div class="card-body">
-                <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" enctype="multipart/form-data"
-                    method="post" novalidate="">
-
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="text-input">Recipient Name</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="rNm" name="rNm" placeholder=" Enter Recipient Name"
-                                type="text">
-                            <!-- <span class="help-block">This is a help text</span> -->
-                        </div>
+                <form action="" class="form-horizontal ng-untouched ng-pristine ng-valid" method="post" novalidate="">
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="currntpassword">Current Password</label>
+                    <div class="col-md-9">
+                    <input  class="form-control" id="currntpassword" name="currntpassword" placeholder="Enter Current Password.." type="password">
+                    <span class="help-block">Please Enter your Current password</span>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="text-input">Mobile Number</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="phoneNum" name="phoneNum"
-                                placeholder=" Phone Number:(9665XXXXXX)" type="number">
-                            <!-- <span class="help-block">This is a help text</span> -->
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="newpassword">New Password</label>
+                    <div class="col-md-9">
+                        <input  class="form-control" id="newpassword" name="newpassword" placeholder="Enter Current Password.." type="password">
+                        <span class="help-block">Please Enter your Current password</span>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="select1">Your Country</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="select1" name="select1">
-                                <option value="0" ng-reflect-value="0">Please select</option>
-                                <option value="1" ng-reflect-value="1">Option #1</option>
-                                <option value="2" ng-reflect-value="2">Option #2</option>
-                                <option value="3" ng-reflect-value="3">Option #3</option>
-                            </select>
-                        </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="city" class="col-form-label col-sm-3">City</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="city" placeholder="Enter your city" type="text">
-                        </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="confirmpassword">Confirm Password</label>
+                    <div class="col-md-9">
+                        <input  class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Enter Confirm Password.." type="password">
+                        <span class="help-block">Please Enter Confirm password</span>
                     </div>
-                    <div class="form-group row">
-                        <label for="street" class="col-form-label col-sm-3">Street</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" id="street" placeholder="Enter street name" type="text">
-                        </div>
                     </div>
                 </form>
             </div>
@@ -186,5 +299,10 @@
                 <button class="btn btn-sm btn-danger" type="reset"><i class="fa fa-ban"></i> Reset</button>
             </div>
         </div>
-    </div>
+    </tab>
+    </tabset>
+    </div><!--/.col-->
+
+</div><!--/.row-->
 </div>
+  

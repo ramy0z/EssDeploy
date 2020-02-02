@@ -69,21 +69,13 @@
 			$this->dbConn = DBService::getCon();
 		}
 		public function getAllUsers() {
-			$stmt = $this->dbConn->prepare("SELECT * FROM " . $this->tableName);
+			$stmt = $this->dbConn->prepare("SELECT * FROM users" . $this->tableName);
 			$stmt->execute();
 			$Users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $Users;
 		}
 		public function getUserDetailsById() {
-			$sql = "SELECT 
-						c.*, 
-						u.name as created_user,
-						u1.name as updated_user
-					FROM users c 
-						JOIN users u ON (c.created_by = u.id) 
-						LEFT JOIN users u1 ON (c.updated_by = u1.id) 
-					WHERE 
-						c.id = :userId";
+			$sql = "SELECT * FROM user_metas WHERE user_id= :userId";
 			$stmt = $this->dbConn->prepare($sql);
 			$stmt->bindParam(':userId', $this->id);
 			$stmt->execute();

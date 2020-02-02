@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { catchError, mapTo, tap, map } from 'rxjs/operators';
-import { config } from './../config';
 import { Tokens } from '../models/tokens';
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,36 +15,25 @@ export class AuthService {
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
   private readonly UID = 'UID';
   private readonly UROLE = 'UROLE';
-  private loggedUser: string;
+  private readonly UNAME ='UNAME';
 
-  constructor(private http: HttpClient) {
+  constructor(private router:Router,private http: HttpClient) {
   }
   login(user): Observable<boolean> {
-    
-    let httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json',
-       'Access-Control-Allow-Origin': '*' , 
-      'Access-Control-Allow-Methods': 'POST',
-      'Access-Control-Allow-Headers': 'X-PINGOTHER, Content-Type',
-      'Access-Control-Max-Age': '86400'})
-    };
-
-    let obj={
-      "name":"login",
-      "param":{
-        "userId":user.username,
-        "pass":user.password
-      }
-    }
-    //`${config.apiUrl}`
-    return this.http.post<any>(`${config.apiUrl}`, obj ,httpOptions )
+    let obj={"name":"login","param":{"userId":user.username,"pass":user.password} };
+    return this.http.post<any>(`${environment.apiUrl}`, obj)
       .pipe(
-        tap(response => this.doLoginUser('uname',response['response']['message'])),
-        mapTo(true),
-        catchError(error => {
-          return of(false);
-        })
-        );
+        map(data => {
+          if(data['response']['status']==200) {
+            localStorage.setItem(this.UNAME, data['response']['data'].UNAME);
+            this.doLoginUser(data['response']['data']);
+            return true;
+          }
+          else return false;
+        },
+        error =>{ return false;}
+        )
+      );
   }
 
   logout() {
@@ -57,29 +47,38 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.http.post<any>(`${config.apiUrl}`, {
-      'refreshToken': this.getRefreshToken()
-    }).pipe(tap((tokens: Tokens) => {
-      this.storeJwtToken(tokens.JWT_TOKEN);
-    }));
+    let reqDat={"name":"userAuth","param":{"uid": this.getUId(),"refresh": this.getRefreshToken()} }
+    return this.http.post<any>(`${environment.apiUrl}`,reqDat).pipe(
+      tap(data => {
+          if(data['response']['status']==200) {
+            this.storeJwtToken(data['response']['data'].JWT_TOKEN);
+            //return data['response']['data'].JWT_TOKEN;
+          }else{
+            this.doLogoutUser();
+          }
+      }),
+      map(data => data['response']['data'].JWT_TOKEN)
+      );
   }
 
   getJwtToken() {
     return localStorage.getItem(this.JWT_TOKEN);
   }
 
-  private doLoginUser(username: string, tokens: Tokens) {
-    this.loggedUser = username;
+  private doLoginUser(tokens: Tokens) {
     this.storeTokens(tokens);
   }
 
   private doLogoutUser() {
-    this.loggedUser = null;
     this.removeTokens();
+    this.router.navigate(['/login']);
   }
 
   private getRefreshToken() {
     return localStorage.getItem(this.REFRESH_TOKEN);
+  }
+  private getUId() {
+    return localStorage.getItem(this.UID);
   }
 
   private storeJwtToken(token: string) {
@@ -94,10 +93,11 @@ export class AuthService {
   }
 
   private removeTokens() {
-    localStorage.removeItem(this.JWT_TOKEN);
-    localStorage.removeItem(this.REFRESH_TOKEN);
-    localStorage.removeItem(this.UID);
-    localStorage.removeItem(this.UROLE);
+    // localStorage.removeItem(this.JWT_TOKEN);
+    // localStorage.removeItem(this.REFRESH_TOKEN);
+    // localStorage.removeItem(this.UID);
+    // localStorage.removeItem(this.UROLE);
+    localStorage.clear();
   }
 
 

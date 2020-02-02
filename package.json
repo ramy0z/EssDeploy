@@ -45,6 +45,8 @@
     "moment": "^2.24.0",
     "mutationobserver-shim": "^0.3.3",
     "ng2-charts": "^2.3.0",
+    "ng2-file-upload": "^1.4.0",
+    "ng2-img-max": "^2.1.18",
     "ng2-validation": "^4.2.0",
     "ngx-bootstrap": "^5.0.0",
     "ngx-perfect-scrollbar": "^8.0.0",

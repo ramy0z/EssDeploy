@@ -2,6 +2,8 @@
 <?php 
 	/*Security*/
 	define('SECRETE_KEY', '!@#$%^&*(MY_SECRET_KEY_AND_IT_VERY_STRONG_!@#$%^&*(');
+	define('ISSUER_CLAIM', 'THE_ISSUER servername');
+	define('AUDIENCE_CLAIM_CLAIM', 'THE_AUDIENCE');
 	// $_SERVER['DOCUMENT_ROOT']
 	define('BASE_URL', 'http://localhost/Ess/api');
 	define('IMAGE_BASE_URL', 'http://localhost/Ess/api/uploads/users'); //$_SERVER['DOCUMENT_ROOT'] . "/ESS/api";

@@ -28,6 +28,34 @@ import { RegisterComponent } from './views/register/register.component';
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
+const APP_COMPONENTS = [
+  MyOrderComponent,
+    MywalletComponent,
+    MyaccountComponent,
+    SecurityInfoComponent,
+    ProfileComponent,
+    MyorderhistoryComponent,
+    OrderPrintComponent,
+    AboutUsComponent,
+    FaqComponent,
+    PickupLocationsComponent,
+    PrivacyPolicyComponent,
+    TermsConditionsComponent,
+    ContactUsComponent,
+    ErrorDialogComponent,
+];
+
+const matModules = [
+  MatDialogModule,
+
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule 
+];
 
 import {
   AppAsideModule,
@@ -68,15 +96,16 @@ import { LoggedGuard } from './guards/logged.guard';
 import { LoggedChildGuard } from './guards/loggedchild.guard';
 import { TokenInterceptor } from './interceptor/token.interceptor';
 import { HttpErrorInterceptor } from './interceptor/error-interceptor';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { ErrorDialogService } from './containers/error-dialog/errordialog.service';
 import { ErrorDialogComponent } from './containers/error-dialog/errordialog.component';
+import { FileUploadModule } from 'ng2-file-upload';
+import { Ng2ImgMaxModule } from 'ng2-img-max';
 
  @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatDialogModule,
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
@@ -98,7 +127,10 @@ import { ErrorDialogComponent } from './containers/error-dialog/errordialog.comp
              useFactory: HttpLoaderFactory,
              deps: [HttpClient]
          }
-     })
+     }),
+     ...matModules,
+     FileUploadModule,
+      Ng2ImgMaxModule
     //  ,JwtModule.forRoot({
     //   config:{
     //     tokenGetter:function tokenGetter(){
@@ -111,40 +143,29 @@ import { ErrorDialogComponent } from './containers/error-dialog/errordialog.comp
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
+    ...APP_COMPONENTS,
     P404Component,
     P500Component,
     LoginComponent,
     RegisterComponent,
-    MyOrderComponent,
-    MywalletComponent,
-    MyaccountComponent,
-    SecurityInfoComponent,
-    ProfileComponent,
-    MyorderhistoryComponent,
-    OrderPrintComponent,
-    AboutUsComponent,
-    FaqComponent,
-    PickupLocationsComponent,
-    PrivacyPolicyComponent,
-    TermsConditionsComponent,
-    ContactUsComponent,
-    ErrorDialogComponent,
+    
   ],
   entryComponents: [
 		ErrorDialogComponent
 	],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }  ,AuthGuard, LoggedGuard,LoggedChildGuard,
-      AuthService,ErrorDialogService,
+  providers: [
+    {provide: LocationStrategy,useClass: HashLocationStrategy},
       { provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,
         multi: true
-      },{ provide: HTTP_INTERCEPTORS,
+      },
+      { provide: HTTP_INTERCEPTORS,
          useClass: HttpErrorInterceptor,
           multi: true 
-        }],
+      },
+      MatDatepickerModule,
+      AuthGuard, LoggedGuard,LoggedChildGuard,AuthService,ErrorDialogService,
+    ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -11,20 +11,24 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  isLoading:Boolean=false;
+  isLoading:boolean=false;
   submitted: boolean=false;
+  errMsg: string='';
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      uName: ['', [Validators.required,Validators.pattern('^(?![0-9]+$)[A-Za-z0-9_-]{6,20}$')]],
+      uName: ['', [Validators.required,Validators.pattern('^[A-Za-z0-9_-]{6,20}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   get f() { return this.loginForm.controls; }
 
+  errorRest(){
+    this.errMsg='';
+  }
 
   login() {
     this.submitted=true;
@@ -35,14 +39,18 @@ export class LoginComponent implements OnInit {
         password: this.f.password.value
       }
     )
-    .subscribe(success => {
+    .subscribe(data => {
       this.isLoading=false;
-      if (success) {
+      if (data) { // login Done
         this.router.navigate(['/']);
+      }
+      else{
+        this.errMsg='Invalid User ID Or Password, Try Again!';
       }
     },
     error => {
       this.isLoading=false;
+      this.errMsg='Server Error While Try Again Later!';
       console.log(error);
     },
     () => {// 'onCompleted' callback.// No errors, route to new page here

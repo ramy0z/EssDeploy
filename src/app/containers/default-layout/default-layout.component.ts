@@ -35,7 +35,7 @@ export class DefaultLayoutComponent implements OnDestroy  {
     this.changes.disconnect();
   }
   logout(){
-    this.authService.logout();
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 }
